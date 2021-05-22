@@ -3,48 +3,111 @@ import 'package:get/get.dart';
 
 import 'package:blocs_sample/src/controllers/listado_page_controler.dart';
 
+import 'cancionPage.dart';
+
 
 
 class ListadoPage extends StatelessWidget {
+
+  final TextEditingController searchcontroller = new TextEditingController();
+
+
+  // ListadoPage(){
+  //     searchcontroller.addListener((){
+  //       if(!searchcontroller.text.isEmpty){
+          
+  //       }
+  //     });
+  // }
+
   @override
   Widget build(BuildContext context) {
     ListDataX dx = Get.put(ListDataX());
     print('Page ** rebuilt');
     return Scaffold(
+      appBar: AppBar(
+        title: GetBuilder<ListDataX>(
+            builder: (_dx) => TextField(
+              controller: searchcontroller,
+              //autofocus: true,
+              keyboardType: TextInputType.text,
+              onChanged: (val)=>_dx.consulta = val,
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: Colors.white54,                
+                suffixIcon: IconButton(
+                  icon: Icon(Icons.clear),
+                  onPressed: (){
+                    searchcontroller.text = '';
+                    _dx.consulta = '';
+                  },
+                ),
+                hintText: "Buscar..."
+              ),
+              style: TextStyle(
+                fontSize: 24,
+              ),
+              
+            ),
+      )
+        
+      ),
       body: SafeArea(
         child: Column(
           children: [
             Expanded(
               flex: 8,
-              child: GetBuilder<ListDataX>(
-                builder: (_dx) => ListView.builder(
-                    itemCount: _dx.numbers.length,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        title: Text('Number: ${_dx.numbers[index]}'),
-                      );
-                    }),
-              ),
-            ),
-            Expanded(
-              flex: 1,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    ElevatedButton(
-                      child: Text('Http Request'),
-                      onPressed: dx.httpCall,
+              child: _GeneraListado(),
+                          ),
+              
+                          
+                        ],
+                      ),
                     ),
-                    ElevatedButton(
-                      child: Text('Reset'),
-                      onPressed: dx.reset,
-                    )
-                  ],
-                )
-            )
-          ],
-        ),
-      ),
-    );
-  }
+                  );
+                }
+              
+                _GeneraListado() {
+                  return GetBuilder<ListDataX>(
+                    builder: (_dx) => 
+                      ((_dx.canciones.length > 1))
+                      ? 
+                      _ListaBuilder(_dx) 
+                      : 
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                           Row(
+                             mainAxisAlignment: MainAxisAlignment.center,
+                             children: [
+                                CircularProgressIndicator(),
+                                Text("   Cargando"),],
+                           ),
+                        ],
+                      ) ,
+                    );
+                }
+                    
+                _ListaBuilder(ListDataX _dx) {
+                  return ListView.builder(
+                    itemCount: _dx.cancionesAct.length,
+                    itemBuilder: (context, index) {
+                      return Column(
+                        children: [
+                          ListTile(
+                            onTap: (){
+                                _dx.actual=index;
+                                Get.to(CancionPage());
+                              },
+                            title: Text(
+                              '${_dx.cancionesAct[index]['titulo']}',
+                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color:Colors.blueGrey,),
+                            ),
+                            trailing: Icon(Icons.keyboard_arrow_right),
+                          ),
+                          Divider(),
+                        ],
+                      );
+                    });
+                }
 }
