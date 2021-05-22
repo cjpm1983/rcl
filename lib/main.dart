@@ -13,11 +13,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Alaba',
       theme: ThemeData(
+        //brightness: Brightness.dark,
         primarySwatch: Colors.blue,
       ),
-      home: InicioPage(title: 'Getx Contador'),
+      home: InicioPage(),
     );
   }
 }

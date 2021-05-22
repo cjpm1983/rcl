@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class DrawerWidget extends StatelessWidget {
 
@@ -27,7 +28,7 @@ class DrawerWidget extends StatelessWidget {
                             onPressed: ()=>Navigator.pop(context), 
                           ),
                           Text('Ajustes Personalizados'),
-                          
+
                         ],
                       ),
                     ],
@@ -45,6 +46,34 @@ class DrawerWidget extends StatelessWidget {
                   onTap: () {
                     //Para cerrar
                     Navigator.pop(context);
+                    // Update the state of the app.
+                    // ...
+                  },
+                ),
+                ListTile(
+                  title: Text('Claro'),
+                  onTap: () {
+                    //Para cerrar
+                    Get.changeTheme(ThemeData(
+                            brightness: Brightness.light,
+                            primarySwatch: Colors.blue,
+                          ),);
+                    Get.changeThemeMode(ThemeMode.light);
+                    //Navigator.pop(context);
+                    // Update the state of the app.
+                    // ...
+                  },
+                ),
+                ListTile(
+                  title: Text('Oscuro'),
+                  onTap: () {
+                    //Para cerrar
+                    Get.changeTheme(ThemeData(
+                            brightness: Brightness.dark,
+                            primarySwatch: Colors.blue,
+                          ),);
+                    Get.changeThemeMode(ThemeMode.dark);
+                    //Navigator.pop(context);
                     // Update the state of the app.
                     // ...
                   },

@@ -20,7 +20,7 @@ class ListDataX extends GetxController {
 
   set consulta(String q){ 
     query.value = q; 
-    print(q);
+    //print(q);
     cancionesAct = canciones.where( (c)=>c['titulo'].toString().toLowerCase().contains(q.toLowerCase()) ).toList();
     update();
     

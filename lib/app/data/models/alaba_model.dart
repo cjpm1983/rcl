@@ -1,8 +1,8 @@
 class Alaba {
-  String nombreApp;
-  List<Canciones> canciones;
+  String nombreApp = "";
+  List<Canciones> canciones = <Canciones>[];
 
-  Alaba({this.nombreApp = "", this.canciones = new List<Canciones>()});
+  Alaba({required this.nombreApp, required this.canciones });
 
   Alaba.fromJson(Map<String, dynamic> json) {
     nombreApp = json['nombreApp'];
@@ -17,7 +17,7 @@ class Alaba {
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
     data['nombreApp'] = nombreApp;
-    if (canciones != null) {
+    if (canciones != <Canciones>[]) {
       data['canciones'] = canciones.map((v) => v.toJson()).toList();
     }
     return data;

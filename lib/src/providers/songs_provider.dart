@@ -16,8 +16,16 @@ class _SongsProvider{
       final resp = await rootBundle.loadString('data/alaba.json');
       Map dataMap = json.decode(resp);
       //print(dataMap['canciones']);
-      canciones = dataMap['canciones'];
       
+      List<dynamic> cancionesT = dataMap['canciones'];
+      
+      canciones = cancionesT.map((c){
+        c["favorito"]=false;
+        //c.favorito=false;
+        return c;
+      }
+      ).toList();
+      print(canciones);
       return canciones;
 
   }

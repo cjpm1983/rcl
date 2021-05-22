@@ -8,11 +8,11 @@ import 'drawer.dart';
 import 'listadoPage.dart';
 
 class InicioPage extends StatelessWidget {
-  String title = "Inicio";
+  final String title = "Himnos y Canciones";
 
   final InicioPageController controller = Get.put(InicioPageController());
 
-  InicioPage({this.title = "Inicio"});
+  InicioPage();
 
   @override
   Widget build(BuildContext context) {
@@ -27,12 +27,12 @@ class InicioPage extends StatelessWidget {
           children: [
             Obx( () => Text("Presionaste ${controller.count.value}")) ,
             TextButton(
-              onPressed: ()=>Get.to(AboutPage()), 
+              onPressed: ()=>Get.to(()=>AboutPage()), 
               child: Text("Acerca de")
             ),
             Obx( () => Text("Presionaste ${controller.count.value}")) ,
             TextButton(
-              onPressed: ()=>Get.to(ListadoPage()), 
+              onPressed: ()=>Get.to(()=>ListadoPage()), 
               child: Text("Listado")
             ),
             IconButton(icon: Icon(Icons.message), 
@@ -52,7 +52,14 @@ class InicioPage extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: ()=> controller.increment(),
+        onPressed: (){
+          controller.increment();
+                              Get.changeTheme(ThemeData(
+                            brightness: Brightness.dark,
+                            primarySwatch: Colors.blue,
+                          ),);
+                    Get.changeThemeMode(ThemeMode.dark);
+          },
         tooltip: 'Increment',
         child: Icon(Icons.add),
       ),
