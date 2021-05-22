@@ -2,7 +2,7 @@ class Alaba {
   String nombreApp;
   List<Canciones> canciones;
 
-  Alaba({this.nombreApp, this.canciones});
+  Alaba({this.nombreApp = "", this.canciones = new List<Canciones>()});
 
   Alaba.fromJson(Map<String, dynamic> json) {
     nombreApp = json['nombreApp'];
@@ -25,11 +25,12 @@ class Alaba {
 }
 
 class Canciones {
-  int cancionId;
-  String titulo;
-  String cancion;
+  int cancionId = -1;
+  String titulo = "";
+  String cancion = "";
+  bool favorito = false;
 
-  Canciones({this.cancionId, this.titulo, this.cancion});
+  Canciones({this.cancionId=-1, this.titulo="", this.cancion="",this.favorito=false});
 
   Canciones.fromJson(Map<String, dynamic> json) {
     cancionId = json['cancion_id'];

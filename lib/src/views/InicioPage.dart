@@ -4,18 +4,20 @@ import 'package:get/get.dart';
 import 'package:blocs_sample/src/controllers/inicio_page_controller.dart';
 
 import 'aboutPage.dart';
+import 'drawer.dart';
 import 'listadoPage.dart';
 
 class InicioPage extends StatelessWidget {
-  final String title;
+  String title = "Inicio";
 
   final InicioPageController controller = Get.put(InicioPageController());
 
-  InicioPage({this.title});
+  InicioPage({this.title = "Inicio"});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: DrawerWidget(),
       appBar: AppBar(
         title: Text(title),
       ),
@@ -42,6 +44,7 @@ class InicioPage extends StatelessWidget {
                       textCancel: 'Cancelar',
                       onConfirm: (){
                         controller.inicializar();
+                        Get.back();
                         }
                       )
                       ),

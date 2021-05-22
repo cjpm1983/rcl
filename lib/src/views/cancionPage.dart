@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 
 
 class CancionPage extends StatelessWidget {
-  const CancionPage({Key key}) : super(key: key);
+  
 
   @override
   Widget build(BuildContext context) {
