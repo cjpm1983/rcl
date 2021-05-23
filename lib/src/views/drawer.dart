@@ -108,6 +108,34 @@ class DrawerWidget extends GetView<DrawerX> {
                   
                 },
               )),
+              ListTile(
+                title: Text("Acerca de", style: _textoItemDrawer() ),
+                leading:  Icon(Icons.message), 
+                onTap:  (){
+                      
+                      Navigator.pop(context);
+
+                      Get.defaultDialog(
+                      title: 'Acerca de',
+                      //middleText: 'para poner contador a 0',
+                      content: Column(
+                                        children: [
+                                          Text("Contenido"),
+                                          Text("Contenido"),
+                                        ]
+                          
+                      ),
+                      textConfirm: 'Cerrar',
+                      onConfirm: (){
+                        Get.back();
+                        }
+                      );
+                      
+                      
+                      }
+            
+                ,
+              ),
         ],
       ),
     );

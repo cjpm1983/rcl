@@ -62,18 +62,26 @@ class ListadoPage extends StatelessWidget {
 
   _GeneraListado() {
     return GetBuilder<ListDataX>(
-      builder: (_dx) => ((_dx.cancionesAct.length >= 1))
+      builder: (_dx) => (  _dx.cancionesAct.length >= 1   )
           ? _ListaBuilder(_dx)
           : Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CircularProgressIndicator(),
-                    Text("   Cargando"),
-                  ],
-                ),
+              children: 
+                [
+                  (!_dx.solofab)?
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            CircularProgressIndicator(),
+                            Text("   Cargando"),
+                          ],
+                        ):
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("No se han seleccionado favoritos aún."),
+                          ],
+                        ),
               ],
             ),
     );
