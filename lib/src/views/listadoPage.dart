@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 
 import 'package:blocs_sample/src/controllers/listado_page_controler.dart';
+import 'package:wakelock/wakelock.dart';
 
 import 'cancionPage.dart';
 import 'drawer.dart';
@@ -20,6 +21,7 @@ class ListadoPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Wakelock.enable();
     ListDataX dx = Get.put(ListDataX());
     print('Page ** rebuilt');
     return Scaffold(

@@ -1,6 +1,7 @@
 import 'package:blocs_sample/src/controllers/listado_page_controler.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:wakelock/wakelock.dart';
 
 
 class CancionPage extends StatelessWidget {
@@ -8,6 +9,7 @@ class CancionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Wakelock.enable();
     return GetBuilder<ListDataX>(
       builder: (_dx) {
         return Container(

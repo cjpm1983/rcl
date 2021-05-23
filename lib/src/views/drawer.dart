@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:blocs_sample/src/controllers/drawer_controller.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
+
 
 class DrawerWidget extends GetView<DrawerX> {
   @override
@@ -116,14 +118,28 @@ class DrawerWidget extends GetView<DrawerX> {
                       Navigator.pop(context);
 
                       Get.defaultDialog(
-                      title: 'Acerca de',
+                      title: '\nAcerca de',
                       //middleText: 'para poner contador a 0',
-                      content: Column(
-                                        children: [
-                                          Text("Contenido"),
-                                          Text("Contenido"),
-                                        ]
-                          
+                      content: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0,vertical: 10.0),
+                        child: Column(
+                                          children: [
+                                            Divider(),
+                                            Text("Alaba version 1.0"),
+                                            Divider(),
+                                            Text("Para mi madre Juana Luisa Morales",style: TextStyle(fontStyle: FontStyle.italic),),
+                                            Divider(),
+                                            Text("Desarrollador: Carlos J. Palacios"),
+                                            Text("Compilación de himnos y canciones: Olga M. Palacios y Juana L. Morales"),
+                                            SelectableLinkify(
+                                                  text: "Contacto: cjpm1983@gmail.com",
+                                                ),
+                                            
+                                            Divider(color: Colors.yellow),
+                                            Text("¡Que todo lo que respira cante alabanzas al Señor!¡Alabado sea el Señor!\nSalmo 150:6",style: TextStyle(fontStyle: FontStyle.italic, color: Colors.green[600]),),
+                                          ]
+                            
+                        ),
                       ),
                       textConfirm: 'Cerrar',
                       onConfirm: (){
