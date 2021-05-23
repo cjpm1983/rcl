@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:blocs_sample/src/controllers/listado_page_controler.dart';
 
 import 'cancionPage.dart';
+import 'drawer.dart';
 
 class ListadoPage extends StatelessWidget {
   final TextEditingController searchcontroller = new TextEditingController();
@@ -22,13 +23,14 @@ class ListadoPage extends StatelessWidget {
     ListDataX dx = Get.put(ListDataX());
     print('Page ** rebuilt');
     return Scaffold(
+      drawer: DrawerWidget(),
       appBar: AppBar(
           title: GetBuilder<ListDataX>(
         builder: (_dx) => TextField(
           controller: searchcontroller,
           //autofocus: true,
           keyboardType: TextInputType.text,
-          onChanged: (val) => _dx.consulta = val,
+          onChanged: (val) => _dx.consulta(val),
           decoration: InputDecoration(
               filled: true,
               fillColor: Colors.white54,
@@ -36,7 +38,7 @@ class ListadoPage extends StatelessWidget {
                 icon: Icon(Icons.clear),
                 onPressed: () {
                   searchcontroller.text = '';
-                  _dx.consulta = '';
+                  _dx.consulta('');
                 },
               ),
               hintText: "Buscar..."),
@@ -60,7 +62,7 @@ class ListadoPage extends StatelessWidget {
 
   _GeneraListado() {
     return GetBuilder<ListDataX>(
-      builder: (_dx) => ((_dx.cancionesAct.length > 1))
+      builder: (_dx) => ((_dx.cancionesAct.length >= 1))
           ? _ListaBuilder(_dx)
           : Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -89,15 +91,6 @@ class ListadoPage extends StatelessWidget {
                   Get.to(CancionPage());
                 },
                 leading: 
-                    // FavoriteButton(
-                    //       isFavorite: _dx.cancionesAct[index]['favorito'],
-                    //       // iconDisabledColor: Colors.white,
-                    //       valueChanged:(_isFavourite){
-
-                    //         _dx.cancionesAct[index]['favorito']=!_dx.cancionesAct[index]['favorito'];
-                    //         print(_dx.cancionesAct[index]);
-                    //       },
-                    //     ),
                 
                 IconButton(
                     icon: Icon(
@@ -107,10 +100,20 @@ class ListadoPage extends StatelessWidget {
                               : Colors.grey[400],
                         ),
                     onPressed: (){
-                      _dx.cancionesAct[index]['favorito'] = !_dx.cancionesAct[index]['favorito'];
-                      String t=_dx.consulta="";                    
-                      _dx.consulta="";
-                      _dx.consulta=t;
+
+                      _dx.cancionesAct[index]['favorito'] = !_dx.cancionesAct[index]['favorito'] ;
+
+                      //Antes de persistir todas las cancioneshay que quitar elfiltrode favoritos y la busqueda
+                      String t=_dx.consultavalue;   
+                      _dx.consulta("");
+                      bool tf = _dx.solofab;
+                      _dx.changesolofav(false);
+
+                      _dx.persistCambios();
+
+                      _dx.changesolofav(tf);
+                      _dx.consulta(t);
+                      
 
                     }
                         ),

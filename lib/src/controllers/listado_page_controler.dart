@@ -9,36 +9,68 @@ class ListDataX extends GetxController {
  
 
   final  query = "".obs;
+  var _solofav = false.obs;
 
-  set actual(int actual) {
-    index = actual;
+  void changesolofav(bool f){
+    _solofav.value = f;
   }
-
-  int get actual{
-    return index;
-  }
-
-  set consulta(String q){ 
-    query.value = q; 
-    //print(q);
-    cancionesAct = canciones.where( (c)=>c['titulo'].toString().toLowerCase().contains(q.toLowerCase()) ).toList();
-    update();
-    
-    }
-
-  String get consulta {
-    return query.value;
+  get solofab{
+    return _solofav.value;
   }
 
   ListDataX(){
     cargarCanciones();    
   }
-
+  
   void cargarCanciones() async {
     canciones = await songsProvider.cargarData();
     cancionesAct = canciones;
     update();
   }
+  
+  void consulta(String q) async{ 
+    query.value = q; 
+    //print(q);
+    cancionesAct = canciones.where( (c)=>((c['titulo'].toString().toLowerCase().contains(q.toLowerCase()) && ( chequeodeFav( c ) )) )).toList();
+        
+            var temp = "";
+            await Future.delayed(Duration(milliseconds: 300), 
+               ()=>{temp = "GO"}
+            );
+            print(temp);
+            
+            update();
+            
+            }
+        
+          set actual(int actual) {
+            index = actual;
+          }
+        
+          int get actual{
+            return index;
+          }
+        
+        
+          String get consultavalue {
+            return query.value;
+          }
+        
+        
+          void persistCambios() {
+            songsProvider.guardarCanciones(cancionesAct);
+          }
+    
+        bool  chequeodeFav(c) {
+          return  _solofav.value?
+                  c['favorito'] //Si piden favoritos solo cuando favoritos es true
+                  :
+                  true //sino piden favoritos, pues todos
+                  ;
+      }
+    
+    
 
 
+ 
 }

@@ -2,7 +2,7 @@ class Alaba {
   String nombreApp = "";
   List<Canciones> canciones = <Canciones>[];
 
-  Alaba({required this.nombreApp, required this.canciones });
+  Alaba({ this.nombreApp,  this.canciones });
 
   Alaba.fromJson(Map<String, dynamic> json) {
     nombreApp = json['nombreApp'];

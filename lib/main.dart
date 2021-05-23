@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'package:blocs_sample/src/views/InicioPage.dart';
+import 'package:get_storage/get_storage.dart';
 
-void main() {
+import 'src/views/listadoPage.dart';
+
+// void main() {
+//   runApp(MyApp());
+// }
+main() async {
+  await GetStorage.init("param");
+  await GetStorage.init("songs");
+  
   runApp(MyApp());
 }
 
@@ -18,7 +26,7 @@ class MyApp extends StatelessWidget {
         //brightness: Brightness.dark,
         primarySwatch: Colors.blue,
       ),
-      home: InicioPage(),
+      home: ListadoPage(),
     );
   }
 }

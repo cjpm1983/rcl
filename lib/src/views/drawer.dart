@@ -1,85 +1,121 @@
+import 'package:blocs_sample/src/controllers/listado_page_controler.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class DrawerWidget extends StatelessWidget {
+import 'package:blocs_sample/src/controllers/drawer_controller.dart';
 
-
+class DrawerWidget extends GetView<DrawerX> {
   @override
   Widget build(BuildContext context) {
+    DrawerX dd = Get.put(DrawerX());
+    ListDataX dx = Get.put(ListDataX());
     return Drawer(
-  // Add a ListView to the drawer. This ensures the user can scroll
-  // through the options in the drawer if there isn't enough vertical
-  // space to fit everything.
-            child: ListView(
-              // Important: Remove any padding from the ListView.
-              padding: EdgeInsets.zero,
-              children: <Widget>[
-                DrawerHeader(
-                  decoration: BoxDecoration(
-                    color: Colors.blue,
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          IconButton(
-                            icon: Icon(Icons.arrow_back),
-                            onPressed: ()=>Navigator.pop(context), 
-                          ),
-                          Text('Ajustes Personalizados'),
-
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                ListTile(
-                  title: Text('Item 1'),
-                  onTap: () {
-                    // Update the state of the app.
-                    // ...
-                  },
-                ),
-                ListTile(
-                  title: Text('Item 2'),
-                  onTap: () {
-                    //Para cerrar
-                    Navigator.pop(context);
-                    // Update the state of the app.
-                    // ...
-                  },
-                ),
-                ListTile(
-                  title: Text('Claro'),
-                  onTap: () {
-                    //Para cerrar
-                    Get.changeTheme(ThemeData(
-                            brightness: Brightness.light,
-                            primarySwatch: Colors.blue,
-                          ),);
-                    Get.changeThemeMode(ThemeMode.light);
-                    //Navigator.pop(context);
-                    // Update the state of the app.
-                    // ...
-                  },
-                ),
-                ListTile(
-                  title: Text('Oscuro'),
-                  onTap: () {
-                    //Para cerrar
-                    Get.changeTheme(ThemeData(
-                            brightness: Brightness.dark,
-                            primarySwatch: Colors.blue,
-                          ),);
-                    Get.changeThemeMode(ThemeMode.dark);
-                    //Navigator.pop(context);
-                    // Update the state of the app.
-                    // ...
-                  },
-                ),
-              ],
+      // Add a ListView to the drawer. This ensures the user can scroll
+      // through the options in the drawer if there isn't enough vertical
+      // space to fit everything.
+      child: ListView(
+        // Important: Remove any padding from the ListView.
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          DrawerHeader(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                  fit: BoxFit.cover, image: AssetImage('assets/trigo.jpg')),
+              color: Colors.blue,
             ),
+            // child: Column(
+            //   mainAxisAlignment: MainAxisAlignment.start,
+            //   children: [
+            //     Row(
+            //       children: [
+            //         IconButton(
+            //           icon: Icon(Icons.arrow_back),
+            //           onPressed: ()=>Navigator.pop(context),
+            //         ),
+            //         Text('Ajustes Personalizados'),
+
+            //       ],
+            //     ),
+            //   ],
+            // ),
+          ),
+          ListTile(
+            //tileColor: Colors.grey[300],
+            title: Center(
+                child: Text(
+              'Ajustes',
+              textScaleFactor: 1.5,
+            )),
+            trailing: IconButton(
+              icon: Icon(Icons.chevron_left),
+              onPressed: () => Navigator.pop(context),
+            ),
+            onTap: () {
+              // Update the state of the app.
+              // ...
+            },
+          ),
+          Divider(),
+          ListTile(
+            title: Text(
+              'Mostrar solo favoritos',
+              style: _textoItemDrawer(),
+            ),
+            leading: Icon(Icons.star, color: Colors.blue),
+            onTap: () {
+              //Para cerrar
+              dx.changesolofav(true);
+              dx.consulta(" ");
+              dx.consulta("");
+              Navigator.pop(context);
+              // Update the state of the app.
+              // ...
+            },
+          ),
+          ListTile(
+            leading:
+                Icon(Icons.my_library_music_rounded, color: Colors.grey[400]),
+            title: Text(
+              'Mostrar Todo',
+              style: _textoItemDrawer(),
+            ),
+            onTap: () {
+              dx.changesolofav(false);
+              dx.consulta(" ");
+              dx.consulta("");
+              Navigator.pop(context);
+            },
+          ),
+          Divider(),
+
+          Obx(() => ListTile(
+                title: dd.modoOscuro
+                    ? Text('Modo oscuro', style: _textoItemDrawer(), )
+                    : Text('Modo claro', style: _textoItemDrawer(),),
+                
+                leading: dd.modoOscuro
+                    ? Icon(Icons.nights_stay)
+                    : Icon(Icons.brightness_high_sharp),
+                    
+
+                onTap: () {
+                  dd.modoOscuro = !dd.modoOscuro;
+                  Get.changeTheme(
+                          ThemeData(
+                            brightness: dd.modoOscuro ? Brightness.light : Brightness.dark,
+                          ),
+                    );
+                  
+                },
+              )),
+        ],
+      ),
+    );
+  }
+
+  _textoItemDrawer() {
+    return TextStyle(
+      fontSize: 20,
     );
   }
 }

@@ -1,9 +1,13 @@
 import 'dart:convert';
 
 import "package:flutter/services.dart" show rootBundle;
+import 'package:get_storage/get_storage.dart';
 
 
 class _SongsProvider{
+
+  GetStorage songstorage = GetStorage('songs');
+
 
   List<dynamic> canciones = [];
 
@@ -13,21 +17,33 @@ class _SongsProvider{
 
   Future<List<dynamic>> cargarData()async{
 
-      final resp = await rootBundle.loadString('data/alaba.json');
-      Map dataMap = json.decode(resp);
-      //print(dataMap['canciones']);
-      
-      List<dynamic> cancionesT = dataMap['canciones'];
-      
-      canciones = cancionesT.map((c){
-        c["favorito"]=false;
-        //c.favorito=false;
-        return c;
+
+      if (songstorage.read('canciones') == null){
+        final resp = await rootBundle.loadString('data/alaba.json');
+        Map dataMap = json.decode(resp);
+        //print(dataMap['canciones']);
+        
+        List<dynamic> cancionesT = dataMap['canciones'];
+        
+        canciones = cancionesT.map((c){
+          c["favorito"]=false;
+          //c.favorito=false;
+          return c;
+        }
+        ).toList();
+
+        songstorage.write('canciones',canciones);
       }
-      ).toList();
+
+      canciones = songstorage.read('canciones');
+
       print(canciones);
       return canciones;
 
+  }
+
+  void guardarCanciones(List cancionesAct) {
+    songstorage.write('canciones',cancionesAct);
   }
 
 }
