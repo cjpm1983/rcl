@@ -1,4 +1,4 @@
-package com.example.blocs_sample
+package com.palacios.alaba
 
 import io.flutter.embedding.android.FlutterActivity
 
