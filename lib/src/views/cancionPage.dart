@@ -1,4 +1,4 @@
-import 'package:blocs_sample/src/controllers/listado_page_controler.dart';
+import 'package:alaba/src/controllers/listado_page_controler.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:wakelock/wakelock.dart';

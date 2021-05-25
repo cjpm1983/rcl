@@ -1,4 +1,4 @@
-import 'package:blocs_sample/src/providers/songs_provider.dart';
+import 'package:alaba/src/providers/songs_provider.dart';
 import 'package:get/get.dart';
 
 class ListDataX extends GetxController {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'package:blocs_sample/src/controllers/inicio_page_controller.dart';
+import 'package:alaba/src/controllers/inicio_page_controller.dart';
 
 import 'aboutPage.dart';
 import 'drawer.dart';
