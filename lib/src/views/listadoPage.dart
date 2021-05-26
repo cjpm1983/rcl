@@ -53,7 +53,7 @@ class ListadoPage extends StatelessWidget {
           children: [
             Expanded(
               flex: 8,
-              child: _GeneraListado(),
+              child: _generaListado(),
             ),
           ],
         ),
@@ -61,10 +61,10 @@ class ListadoPage extends StatelessWidget {
     );
   }
 
-  _GeneraListado() {
+  _generaListado() {
     return GetBuilder<ListDataX>(
       builder: (_dx) => (  _dx.cancionesAct.length >= 1   )
-          ? _ListaBuilder(_dx)
+          ? _listaBuilder(_dx)
           : Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: 
@@ -88,7 +88,7 @@ class ListadoPage extends StatelessWidget {
     );
   }
 
-  _ListaBuilder(ListDataX _dx) {
+  _listaBuilder(ListDataX _dx) {
     return ListView.builder(
         itemCount: _dx.cancionesAct.length,
         itemBuilder: (context, index) {
@@ -110,18 +110,22 @@ class ListadoPage extends StatelessWidget {
                         ),
                     onPressed: (){
 
-                      _dx.cancionesAct[index]['favorito'] = !_dx.cancionesAct[index]['favorito'] ;
+
+                      
+
+                      //_dx.cancionesAct[index]['favorito'] = !_dx.cancionesAct[index]['favorito'] ;
 
                       //Antes de persistir todas las cancioneshay que quitar elfiltrode favoritos y la busqueda
-                      String t=_dx.consultavalue;   
-                      _dx.consulta("");
-                      bool tf = _dx.solofab;
-                      _dx.changesolofav(false);
+                       //String t=_dx.consultavalue;   
+                      // _dx.consulta("");
+                       // bool tf = _dx.solofab;
+                      // _dx.changesolofav(false);
 
-                      _dx.persistCambios();
+                      // _dx.persistCambios();
+                      _dx.toggleFavorito(index);
 
-                      _dx.changesolofav(tf);
-                      _dx.consulta(t);
+                       //_dx.changesolofav(tf);
+                      //_dx.consulta(t);
                       
 
                     }
@@ -133,7 +137,7 @@ class ListadoPage extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w700,
-                    color: Colors.blueGrey,
+                    //color: Colors.blueGrey,
                   ),
                 ),
                 trailing: Icon(Icons.keyboard_arrow_right),

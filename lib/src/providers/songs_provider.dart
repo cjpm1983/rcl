@@ -9,7 +9,8 @@ class _SongsProvider{
   GetStorage songstorage = GetStorage('songs');
 
 
-  List<dynamic> canciones = [];
+  //List<dynamic> canciones = [];
+  bool _modoOscuro = true;
 
   _SongsProvider(){
     cargarData();
@@ -17,6 +18,7 @@ class _SongsProvider{
 
   Future<List<dynamic>> cargarData()async{
 
+      List<dynamic> canciones = [];
 
       if (songstorage.read('canciones') == null){
         final resp = await rootBundle.loadString('data/alaba.json');
@@ -33,17 +35,34 @@ class _SongsProvider{
         ).toList();
 
         songstorage.write('canciones',canciones);
+        //songstorage.write('modoOscuro',_modoOscuro);
+
       }
 
       canciones = songstorage.read('canciones');
+      //_modoOscuro = songstorage.read('modoOscuro');
 
-      print(canciones);
+      print("Cargadas las canciones del song provider");
       return canciones;
 
   }
 
-  void guardarCanciones(List cancionesAct) {
-    songstorage.write('canciones',cancionesAct);
+  void guardarCanciones(List cancionesN) {
+    //canciones = cancionesN;
+    songstorage.write('canciones',cancionesN);
+  }
+
+  get modoOscuro {
+     if (songstorage.read('modoOscuro') == null){
+       songstorage.write('modoOscuro',true);
+     }
+     _modoOscuro =  songstorage.read('modoOscuro');
+    return _modoOscuro;
+  }
+
+  set modoOscuro(bool modo){
+    _modoOscuro = modo;
+    songstorage.write('modoOscuro',_modoOscuro);
   }
 
 }

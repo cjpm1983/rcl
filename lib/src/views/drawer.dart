@@ -1,7 +1,11 @@
+import 'dart:html';
+
 import 'package:alaba/src/controllers/drawer_controller.dart';
 import 'package:alaba/src/controllers/listado_page_controler.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'dart:async';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'package:flutter_linkify/flutter_linkify.dart';
 
@@ -11,6 +15,7 @@ class DrawerWidget extends GetView<DrawerX> {
   Widget build(BuildContext context) {
     DrawerX dd = Get.put(DrawerX());
     ListDataX dx = Get.put(ListDataX());
+   
     return Drawer(
       // Add a ListView to the drawer. This ensures the user can scroll
       // through the options in the drawer if there isn't enough vertical
@@ -20,9 +25,10 @@ class DrawerWidget extends GetView<DrawerX> {
         padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
+            child: Text(""),
             decoration: BoxDecoration(
               image: DecorationImage(
-                  fit: BoxFit.cover, image: AssetImage('assets/trigo.jpg')),
+                  fit: BoxFit.cover, image: AssetImage('assets/banner${dd.random()}.jpg')),
               color: Colors.blue,
             ),
             // child: Column(
@@ -67,8 +73,8 @@ class DrawerWidget extends GetView<DrawerX> {
             onTap: () {
               //Para cerrar
               dx.changesolofav(true);
-              dx.consulta(" ");
-              dx.consulta("");
+              //dx.consulta(" ");
+              //dx.consulta("");
               Navigator.pop(context);
               // Update the state of the app.
               // ...
@@ -83,8 +89,8 @@ class DrawerWidget extends GetView<DrawerX> {
             ),
             onTap: () {
               dx.changesolofav(false);
-              dx.consulta(" ");
-              dx.consulta("");
+              //dx.consulta(" ");
+              //dx.consulta("");
               Navigator.pop(context);
             },
           ),
@@ -124,7 +130,7 @@ class DrawerWidget extends GetView<DrawerX> {
                         padding: const EdgeInsets.symmetric(horizontal: 10.0,vertical: 10.0),
                         child: Column(
                                           children: [
-                                            Divider(),
+                                            
                                             Text("Alaba version 1.0"),
                                             Divider(),
                                             Text("Para mi madre Juana Luisa Morales",style: TextStyle(fontStyle: FontStyle.italic),),
@@ -132,11 +138,17 @@ class DrawerWidget extends GetView<DrawerX> {
                                             Text("Desarrollador: Carlos J. Palacios"),
                                             Text("Compilación de himnos y canciones: Olga M. Palacios y Juana L. Morales"),
                                             SelectableLinkify(
+                                                  onOpen: _onOpen,
                                                   text: "Contacto: cjpm1983@gmail.com",
                                                 ),
                                             
                                             Divider(color: Colors.yellow),
-                                            Text("¡Que todo lo que respira cante alabanzas al Señor!¡Alabado sea el Señor!\nSalmo 150:6",style: TextStyle(fontStyle: FontStyle.italic, color: Colors.green[600]),),
+                                            Text("¡Que todo lo que respira cante alabanzas al Señor!¡Alabado sea el Señor! - Salmo 150:6",style: TextStyle(fontStyle: FontStyle.italic, color: Colors.green[600]),),
+                                            Divider(color: Colors.yellow),
+                                            Linkify(
+                                                  onOpen: _onOpen,
+                                                  text: "Arte tarjetas cortesía: https://fb.me/oseas216",
+                                                ),
                                           ]
                             
                         ),
@@ -161,5 +173,15 @@ class DrawerWidget extends GetView<DrawerX> {
     return TextStyle(
       fontSize: 20,
     );
+  }
+
+  Future<void>_onOpen(LinkableElement link) async {
+    if(await canLaunch(link.url)){
+        await launch(link.url);
+    }
+    else{
+      throw 'No se pudo abrir el enlace $link, compruebe su conexión';
+    }
+
   }
 }
