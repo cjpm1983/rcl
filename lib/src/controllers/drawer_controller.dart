@@ -5,6 +5,11 @@ import 'package:alaba/src/providers/songs_provider.dart';
 
 class DrawerX extends GetxController {
   var _modoOscuro = true.obs;
+  var _random=1.obs;
+
+  DrawerX(){
+    randomize();
+  }
 
   set modoOscuro(bool modo){
     _modoOscuro.value = modo;
@@ -20,10 +25,18 @@ class DrawerX extends GetxController {
     return _modoOscuro.value;
   }
 
-  int random() {
+
+  void randomize(){
     int min = 1;
     int max = 13;
-    return min+( Random(1).nextInt(max-min) );
+    var random = new Random();
+    _random.value = min+ random.nextInt(max-min) ;
+    print("Random cambiado a $_random");
+
+  }
+  get random{
+    print("SolicitadoRandom $_random");
+    return _random;
   }
 
 

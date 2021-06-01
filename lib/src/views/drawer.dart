@@ -1,4 +1,4 @@
-import 'dart:html';
+//import 'dart:html';
 
 import 'package:alaba/src/controllers/drawer_controller.dart';
 import 'package:alaba/src/controllers/listado_page_controler.dart';
@@ -22,13 +22,26 @@ class DrawerWidget extends GetView<DrawerX> {
       // space to fit everything.
       child: ListView(
         // Important: Remove any padding from the ListView.
-        padding: EdgeInsets.zero,
+        padding: EdgeInsets.only(top:24),
         children: <Widget>[
-          DrawerHeader(
-            child: Text(""),
+          //Divider(height: 24,),
+          Obx( () => DrawerHeader(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                ListTile(
+                  title: Text("\n\n"),
+                  trailing: IconButton(icon: Icon(Icons.cached_rounded, color: Colors.grey.shade400,), 
+                  onPressed: ()=>
+                    dd.randomize()
+                    ),
+                  
+                ),
+              ],
+            ),
             decoration: BoxDecoration(
-              image: DecorationImage(
-                  fit: BoxFit.cover, image: AssetImage('assets/banner${dd.random()}.jpg')),
+              image:  DecorationImage(
+                                fit: BoxFit.fill, image: AssetImage('assets/banner${dd.random}.jpg')),
               color: Colors.blue,
             ),
             // child: Column(
@@ -46,7 +59,7 @@ class DrawerWidget extends GetView<DrawerX> {
             //     ),
             //   ],
             // ),
-          ),
+          )),
           ListTile(
             //tileColor: Colors.grey[300],
             title: Center(
@@ -145,7 +158,7 @@ class DrawerWidget extends GetView<DrawerX> {
                                             Divider(color: Colors.yellow),
                                             Text("¡Que todo lo que respira cante alabanzas al Señor!¡Alabado sea el Señor! - Salmo 150:6",style: TextStyle(fontStyle: FontStyle.italic, color: Colors.green[600]),),
                                             Divider(color: Colors.yellow),
-                                            Linkify(
+                                            SelectableLinkify(
                                                   onOpen: _onOpen,
                                                   text: "Arte tarjetas cortesía: https://fb.me/oseas216",
                                                 ),
