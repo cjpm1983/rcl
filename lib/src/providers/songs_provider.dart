@@ -1,7 +1,10 @@
 import 'dart:convert';
 
-import "package:flutter/services.dart" show rootBundle;
+//import "package:flutter/services.dart" show rootBundle;
 import 'package:get_storage/get_storage.dart';
+
+import 'dart:async';
+import 'package:http/http.dart' as http;
 
 
 class _SongsProvider{
@@ -9,46 +12,39 @@ class _SongsProvider{
   GetStorage songstorage = GetStorage('songs');
 
 
-  //List<dynamic> canciones = [];
+  List<dynamic> _emisoras = [];
   bool _modoOscuro = true;
+  bool _modoAhorro = true;
+  int _idEmisoraActual = 1;
 
   _SongsProvider(){
     cargarData();
   }
 
+
   Future<List<dynamic>> cargarData()async{
 
-      List<dynamic> canciones = [];
+      var response = await http.get("http://192.168.43.73/emisoras/urls.json");
 
-      if (songstorage.read('canciones') == null){
-        final resp = await rootBundle.loadString('data/alaba.json');
-        Map dataMap = json.decode(resp);
-        //print(dataMap['canciones']);
-        
-        List<dynamic> cancionesT = dataMap['canciones'];
-        
-        canciones = cancionesT.map((c){
-          c["favorito"]=false;
-          //c.favorito=false;
-          return c;
-        }
-        ).toList();
+      if (response.statusCode == 200){
 
-        songstorage.write('canciones',canciones);
-        //songstorage.write('modoOscuro',_modoOscuro);
+        //List<dynamic> values = [];
+        //print (response.body);
+        Map dataMap = json.decode(response.body);
+
+        
+
+        List<dynamic> emisorasT = dataMap['emisoras'];
+
+        _emisoras = emisorasT.map((c)=>c).toList();
 
       }
-
-      canciones = songstorage.read('canciones');
-      //_modoOscuro = songstorage.read('modoOscuro');
-
-      print("Cargadas las canciones del song provider");
-      return canciones;
+       
+      return _emisoras;
 
   }
 
   void guardarCanciones(List cancionesN) {
-    //canciones = cancionesN;
     songstorage.write('canciones',cancionesN);
   }
 
@@ -63,6 +59,32 @@ class _SongsProvider{
   set modoOscuro(bool modo){
     _modoOscuro = modo;
     songstorage.write('modoOscuro',_modoOscuro);
+  }
+
+  get modoAhorro {
+     if (songstorage.read('modoAhorro') == null){
+       songstorage.write('modoAhorro',true);
+     }
+     _modoAhorro =  songstorage.read('modoAhorro');
+    return _modoAhorro;
+  }
+
+  set modoAhorro(bool modo){
+    _modoAhorro = modo;
+    songstorage.write('modoAhorro',_modoAhorro);
+  }
+
+  get idEmisoraActual{
+     if (songstorage.read('idEmisoraActual') == null){
+       songstorage.write('idEmisoraActual',1);
+     }
+     _idEmisoraActual =  songstorage.read('idEmisoraActual');
+    return _idEmisoraActual;
+  }
+
+  set idEmisoraActual(int emisora){
+    _idEmisoraActual = emisora;
+    songstorage.write('idEmisoraActual',_idEmisoraActual);
   }
 
 }

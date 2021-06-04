@@ -4,7 +4,8 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 import 'src/controllers/drawer_controller.dart';
-import 'src/views/listadoPage.dart';
+import 'src/controllers/radio_player_controller.dart';
+import 'src/views/radioPlayer.dart';
 
 // void main() {
 //   runApp(MyApp());
@@ -21,15 +22,17 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     DrawerX dd = Get.put(DrawerX());
+    //RadioCX rx = Get.put(RadioCX());
 
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Alaba',
+      title: 'RadioTM',
       theme: ThemeData(
         brightness: dd.modoOscuro ? Brightness.light : Brightness.dark,
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.purple,
       ),
-      home: ListadoPage(),
+      home: RadioPlayer(),
     );
   }
+
 }

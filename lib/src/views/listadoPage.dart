@@ -21,7 +21,7 @@ class ListadoPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Wakelock.enable();
-    ListDataX dx = Get.put(ListDataX());
+    //ListDataX dx = Get.put(ListDataX());
     print('Page ** rebuilt');
     return Scaffold(
       drawer: DrawerWidget(),
