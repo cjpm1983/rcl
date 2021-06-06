@@ -24,6 +24,7 @@ class _SongsProvider{
 
   Future<List<dynamic>> cargarData()async{
 
+      //var response = await http.get("https://raw.githubusercontent.com/cjpm1983/db/main/rcl.json");
       var response = await http.get("http://192.168.43.73/emisoras/urls.json");
 
       if (response.statusCode == 200){

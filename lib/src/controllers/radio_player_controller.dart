@@ -17,7 +17,7 @@ class RadioCX extends GetxController {
   
   AudioPlayer _audioPlayer;  
 
-  List<dynamic> _emisoras =  []; //probable no lo use y cargue dinamico siempre
+  List<dynamic> emisoras =  []; //probable no lo use y cargue dinamico siempre
 
   //es mejor guardar el id de la emisora, por si la url cambiaej. 1 es transmundial
   var _idEmisoraActual = 1.obs;
@@ -46,9 +46,9 @@ class RadioCX extends GetxController {
     //if (_audioPlayer!=null) dispose();
 
 
-    _emisoras = await songsProvider.cargarData();
+    emisoras = await songsProvider.cargarData();
 
-    var actual = _emisoras.firstWhere((element) => element['id']==idEmisoraActual);
+    var actual = emisoras.firstWhere((element) => element['id']==idEmisoraActual);
     
     _url.value = _modoAhorro.value?actual['url']:actual['url_full'];//seleccionar esta o url_full si ahorro esta habilitado
 
@@ -75,7 +75,7 @@ class RadioCX extends GetxController {
 
   void play() {
          //_audioPlayer = AudioPlayer();
-        //_init();
+        _init();
         _showTimer.value=true;
         //tcontroller.reset();
         _audioPlayer.play();

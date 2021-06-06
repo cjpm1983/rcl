@@ -33,35 +33,35 @@ class RadioPlayer extends StatelessWidget {
                       height: 150.0,
                     )
                   : rx.buttonState == "loading"
-                      ? Text("Cargando...",
-                          textScaleFactor: 2.0,)
+                      ? Text(
+                          "Cargando...",
+                          textScaleFactor: 2.0,
+                        )
                       : Text(
                           "Pausado",
                           textScaleFactor: 2.0,
                         ),
             ),
             Spacer(),
-            
+
             Obx(
-              () => 
-              Visibility(
+              () => Visibility(
                 visible: rx.showTimer,
                 child: CustomTimer(
-                controller: rx.tcontroller,
-                
-                from: Duration(minutes: rx.t),
-                to: Duration(minutes: 0),
-                builder: (CustomTimerRemainingTime remaining) {
-                  return Text(
-                    "${remaining.hours}:${remaining.minutes}:${remaining.seconds}",
-                    style: TextStyle(fontSize: 30.0),
-                  );
-                },
-                onFinish: () {
-                  rx.pause();
-                  rx.tcontroller.reset();
-                }                //resetBuilder: ,
-              ),
+                    controller: rx.tcontroller,
+                    from: Duration(minutes: rx.t),
+                    to: Duration(minutes: 0),
+                    builder: (CustomTimerRemainingTime remaining) {
+                      return Text(
+                        "${remaining.hours}:${remaining.minutes}:${remaining.seconds}",
+                        style: TextStyle(fontSize: 30.0),
+                      );
+                    },
+                    onFinish: () {
+                      rx.pause();
+                      rx.tcontroller.reset();
+                    } //resetBuilder: ,
+                    ),
               ),
             ),
             // Obx(()  {
@@ -79,7 +79,7 @@ class RadioPlayer extends StatelessWidget {
               ],
             ),
             Spacer(),
-            Text("Radio Transmundial"),
+            //Obx(() => Text("${rx.emisoras[rx.idEmisoraActual]['nombre']}")),
           ],
         ),
       ),
@@ -125,7 +125,4 @@ class RadioPlayer extends StatelessWidget {
         );
     }
   }
-
-
-
 }
