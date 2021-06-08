@@ -7,6 +7,7 @@ import 'package:alaba/src/controllers/radio_player_controller.dart';
 // import 'package:alaba/src/controllers/radio_player_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
+
 import 'package:get/get.dart';
 import 'dart:async';
 import 'package:url_launcher/url_launcher.dart';
@@ -33,13 +34,13 @@ class DrawerWidget extends GetView<DrawerX> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 ListTile(
-                  title: Text("Radio Trans Mundial "),
+                  title: Text("Radio Cristiana Lite")
                 ),
               ],
             ),
             decoration: BoxDecoration(
               image: DecorationImage(
-                  fit: BoxFit.fill, image: AssetImage('assets/rtm.png')),
+                  fit: BoxFit.fill, image: AssetImage('assets/icon.png')),
               color: Colors.blue,
             ),
           ),
@@ -63,6 +64,18 @@ class DrawerWidget extends GetView<DrawerX> {
 
           ListTile(
             title: Text("Emisora", style: _textoItemDrawer()),
+            subtitle: Obx(() => rx.actual['nombre']!=null
+                                          ?
+                                            Text(" ${rx.actual['nombre']} ", 
+                                               style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold,decoration: TextDecoration.underline, color:Colors.blueAccent
+                                            ),
+                                            )
+                                          :
+                                           Text(" Cargando ... ", 
+                                               style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold, 
+                                            ),
+                                            )
+                                          ),
             leading: Icon(Icons.radio_rounded),
             onTap: () {
               Navigator.pop(context);
@@ -170,124 +183,222 @@ class DrawerWidget extends GetView<DrawerX> {
             onTap: () {
               Navigator.pop(context);
 
-              // Get.defaultDialog(
-              // title: '\nAcerca de',
-              // //middleText: 'para poner contador a 0',
-              // content: Padding(
-              //   padding: const EdgeInsets.symmetric(horizontal: 10.0,vertical: 10.0),
-              //   child: Column(
-              //                     children: [
+              Get.defaultDialog(
+              title: '\nAcerca de',
+              //middleText: 'para poner contador a 0',
+              content: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10.0,vertical: 10.0),
+                child: Column(
+                                  children: [
 
-              //                       Text("Alaba version 1.0"),
-              //                       Divider(),
-              //                       Text("Para mi madre Juana Luisa Morales",style: TextStyle(fontStyle: FontStyle.italic),),
-              //                       Divider(),
-              //                       Text("Desarrollador: Carlos J. Palacios"),
-              //                       Text("Compilación de himnos y canciones: Olga M. Palacios y Juana L. Morales"),
-              //                       SelectableLinkify(
-              //                             onOpen: _onOpen,
-              //                             text: "Contacto: cjpm1983@gmail.com",
-              //                           ),
+                                    Text("Radio Cristiana Lite version 1.0"),
+                                    Divider(),
+                                    Divider(),
+                                    Text("Desarrollo: "),
+                                    Text("   Adrian Yanes"),
+                                    Text("   Carlos J. Palacios"),
+                                    Text("   Kyle Pitre"),
+                                    // SelectableLinkify(
+                                    //       onOpen: _onOpen,
+                                    //       text: "Contacto: cjpm1983@gmail.com",
+                                    //     ),
 
-              //                       Divider(color: Colors.yellow),
-              //                       Text("¡Que todo lo que respira cante alabanzas al Señor!¡Alabado sea el Señor! - Salmo 150:6",style: TextStyle(fontStyle: FontStyle.italic, color: Colors.green[600]),),
-              //                       Divider(color: Colors.yellow),
-              //                       SelectableLinkify(
-              //                             onOpen: _onOpen,
-              //                             text: "Arte tarjetas cortesía: https://fb.me/oseas216",
-              //                           ),
-              //                     ]
+                                    Divider(color: Colors.yellow),
+                                    Text(
+                                      "Hijo mío, presta atención a lo que digo y atesora mis mandatos. (...) ¡Pues el SEÑOR concede sabiduría! De su boca provienen el saber y el entendimiento.\nProverbios 2:1,6",
+                                    style: TextStyle(fontStyle: FontStyle.italic, color: Colors.green[600]),),
+                                    Divider(color: Colors.yellow),
+                                    
+                                  ]
 
-              //   ),
-              // ),
-              // textConfirm: 'Cerrar',
-              // onConfirm: (){
-              //   Get.back();
-              //   }
-              // );
+                ),
+              ),
+              textConfirm: 'Cerrar',
+              onConfirm: (){
+                Get.back();
+                }
+              );
             },
           ),
 
+          // Divider(),
+          // Obx(
+          //   () => FlutterSwitch(
+          //     activeText: "Ahorro activado",
+          //     inactiveText: "Ahorro desactivado",
+          //     value: rx.modoAhorro,
+          //     duration: Duration(milliseconds: 500),
+
+          //     width: 200.0,
+          //     //height: 12.0,
+          //     //valueFontSize: 12.0,
+          //     //toggleSize: 45.0,
+          //     //borderRadius: 30.0,
+          //     //padding: 8.0,
+          //     showOnOff: true,
+          //     onToggle: (val) {
+          //       rx.modoAhorro
+          //           ? Get.defaultDialog(
+          //               title: '\nConfirmación',
+          //               //middleText: 'para poner contador a 0',
+          //               content: Padding(
+          //                 padding: const EdgeInsets.symmetric(
+          //                     horizontal: 10.0, vertical: 10.0),
+          //                 child: Column(children: [
+          //                   Text(
+          //                       "¿Está seguro de querer desactivar el ahorro de datos? Usted se conectará directamente a la emisora con toda la calidad incurriendo en elevado gasto de datos."),
+          //                   Divider(),
+          //                 ]),
+          //               ),
+          //               textConfirm: 'Desactivar ahorro',
+          //               textCancel: 'Cancelar',
+          //               onConfirm: () {
+          //                 Get.back();
+          //                 rx.modoAhorro = false;
+          //                 rx.pause();
+          //               })
+          //           : rx.modoAhorro = true;
+          //     },
+          //   ),
+          // ),
           Divider(),
-          Obx(
-            () => FlutterSwitch(
-              activeText: "Ahorro activado",
-              inactiveText: "Ahorro desactivado",
-              value: rx.modoAhorro,
-              duration: Duration(milliseconds: 500),
 
-              width: 200.0,
-              //height: 12.0,
-              //valueFontSize: 12.0,
-              //toggleSize: 45.0,
-              //borderRadius: 30.0,
-              //padding: 8.0,
-              showOnOff: true,
-              onToggle: (val) {
-                rx.modoAhorro
-                    ? Get.defaultDialog(
-                        title: '\nConfirmación',
-                        //middleText: 'para poner contador a 0',
-                        content: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10.0, vertical: 10.0),
-                          child: Column(children: [
-                            Text(
-                                "¿Está seguro de querer desactivar el ahorro de datos? Usted se conectará directamente a la emisora con toda la calidad incurriendo en elevado gasto de datos."),
-                            Divider(),
-                          ]),
-                        ),
-                        textConfirm: 'Desactivar ahorro',
-                        textCancel: 'Cancelar',
-                        onConfirm: () {
-                          Get.back();
-                          rx.modoAhorro = false;
-                          rx.pause();
-                        })
-                    : rx.modoAhorro = true;
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  _textoItemDrawer() {
-    return TextStyle(
-      fontSize: 20,
-    );
-  }
-
-  Future<void> _onOpen(LinkableElement link) async {
-    if (await canLaunch(link.url)) {
-      await launch(link.url);
-    } else {
-      throw 'No se pudo abrir el enlace $link, compruebe su conexión';
-    }
-  }
-
-  _generaListado(RadioCX rx) {
-    // return DropdownButton(items: rx.emisoras.map((e) {
-    //   return DropdownMenuItem(
-    //     child: Text(e['nombre'])
-    //   );
-    // }).toList(),
-    // );
-    return  Column(
-          children: rx.emisoras.map((e) {
-            return ListTile(
-              title: Text(e["nombre"]),
-              onTap: (){
-                rx.idEmisoraActual = e["id"];
-                rx.pause();
-                Get.back();
-
-              },
-              
-            );
-          }).toList(),
-        );
-
-  }
+          ListTile(
+            title: Text("Ahorro", style: _textoItemDrawer()),
+            subtitle: Obx(() => _getSubTextAhorro(rx)),
+                        leading: Icon(Icons.money_off_rounded),
+                        onTap: () {
+                          Navigator.pop(context);
+            
+                          Get.defaultDialog(
+                              title: '\nAhorro de Datos',
+                              //middleText: 'para poner contador a 0',
+                              content: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10.0, vertical: 10.0),
+                                child: Column(children: [
+                                  Text(
+                                      "Seleccione el modo de ahorro preferido"),
+                                  Divider(color: Colors.yellow),
+                                  Obx(
+                                    () => Column(
+                                      children: [
+                                        RadioListTile<Ahorros>(
+                                          title: const Text('Desactivado'),
+                                          subtitle: const Text('No recomendado'),
+                                          value: Ahorros.desactivado,
+                                          groupValue: rx.ahorro,
+                                          onChanged: (Ahorros value) {
+                                                          Get.defaultDialog(
+                                                              title: '\nConfirmación',
+                                                              //middleText: 'para poner contador a 0',
+                                                              content: Padding(
+                                                                padding: const EdgeInsets.symmetric(
+                                                                    horizontal: 10.0, vertical: 10.0),
+                                                                child: Column(children: [
+                                                                  Text(
+                                                                      "¿Está seguro de querer desactivar el ahorro de datos? Usted se conectará directamente a la emisora con toda la calidad incurriendo en elevado gasto de datos."),
+                                                                  Divider(),
+                                                                ]),
+                                                              ),
+                                                              textConfirm: 'Desactivar ahorro',
+                                                              textCancel: 'Cancelar',
+                                                              onConfirm: () {
+                                                                Get.back();
+                                                                rx.ahorro = value;
+                                                                rx.pause();
+                                                              });
+                                          },
+                                        ),
+                                        RadioListTile<Ahorros>(
+                                          title: const Text('Moderado'),
+                                          subtitle: const Text('20Mb/h'),
+                                          value: Ahorros.moderado,
+                                          groupValue: rx.ahorro,
+                                          onChanged: (Ahorros value) {
+                                            rx.ahorro = value;
+                                            rx.pause();
+                                          },
+                                        ),
+                                        RadioListTile<Ahorros>(
+                                          title: const Text('Extremo'),
+                                          subtitle: const Text('8Mb/h'),
+                                          value: Ahorros.extremo,
+                                          groupValue: rx.ahorro,
+                                          onChanged: (Ahorros value) {
+                                            rx.ahorro = value;
+                                            rx.pause();
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                ]),
+                              ),
+                              textConfirm: 'Cerrar',
+                              onConfirm: () {
+                                Get.back();
+                              });
+                        },
+                      ),
+            
+            
+                    ],
+                  ),
+                );
+              }
+            
+              _textoItemDrawer() {
+                return TextStyle(
+                  fontSize: 20,
+                );
+              }
+            
+              Future<void> _onOpen(LinkableElement link) async {
+                if (await canLaunch(link.url)) {
+                  await launch(link.url);
+                } else {
+                  throw 'No se pudo abrir el enlace $link, compruebe su conexión';
+                }
+              }
+            
+              _generaListado(RadioCX rx) {
+                // return DropdownButton(items: rx.emisoras.map((e) {
+                //   return DropdownMenuItem(
+                //     child: Text(e['nombre'])
+                //   );
+                // }).toList(),
+                // );
+                return  Column(
+                      children: rx.emisoras.map((e) {
+                        return ListTile(
+                          title: Text(e["nombre"]),
+                          onTap: (){
+                            rx.idEmisoraActual = e["id"];
+                            rx.pause();
+                            Get.back();
+            
+                          },
+                          
+                        );
+                      }).toList(),
+                    );
+            
+              }
+            
+              Text _getSubTextAhorro(RadioCX rx) {
+                Text t;
+                switch (rx.ahorro) {
+                  case Ahorros.desactivado:
+                    t = Text("Desactivado, Alto Consumo", style: TextStyle(color: Colors.red[400] ));
+                    break;
+                  case Ahorros.moderado:
+                    t = Text("Moderado 20Mb/h", style: TextStyle(color: Colors.orangeAccent[400] ));
+                    break;
+                  case Ahorros.extremo:
+                    t = Text("Extremo 8Mb/h", style: TextStyle(color: Colors.green[400] ));
+                    break;
+                }
+              return t;
+              }
 }

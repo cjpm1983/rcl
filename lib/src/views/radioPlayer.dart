@@ -18,7 +18,21 @@ class RadioPlayer extends StatelessWidget {
     //DrawerX dd = Get.put(DrawerX());
     return Scaffold(
       appBar: AppBar(
-        title: Text("Radio Cristiana Cuba"),
+        title:             Obx(() => rx.actual['nombre']!=null
+                                          ?
+                                            Text(" ${rx.actual['nombre']} ", 
+                                               //style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold,
+                                           // ),
+                                            )
+                                          :
+                                           Text(" Cargando ... ", 
+                                               //style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold, 
+                                           // ),
+                                            )
+                                          )
+        
+        
+        ,
       ),
       drawer: DrawerWidget(),
       body: Padding(
@@ -42,28 +56,8 @@ class RadioPlayer extends StatelessWidget {
                           textScaleFactor: 2.0,
                         ),
             ),
-            Spacer(),
 
-            Obx(
-              () => Visibility(
-                visible: rx.showTimer,
-                child: CustomTimer(
-                    controller: rx.tcontroller,
-                    from: Duration(minutes: rx.t),
-                    to: Duration(minutes: 0),
-                    builder: (CustomTimerRemainingTime remaining) {
-                      return Text(
-                        "${remaining.hours}:${remaining.minutes}:${remaining.seconds}",
-                        style: TextStyle(fontSize: 30.0),
-                      );
-                    },
-                    onFinish: () {
-                      rx.pause();
-                      rx.tcontroller.reset();
-                    } //resetBuilder: ,
-                    ),
-              ),
-            ),
+            
             // Obx(()  {
             //   if (dd.t>0){
 
@@ -78,8 +72,28 @@ class RadioPlayer extends StatelessWidget {
                 Obx(() => botonPrincipal(rx)),
               ],
             ),
+            
+            Obx(
+              () => Visibility(
+                visible: rx.showTimer,
+                child: CustomTimer(
+                    controller: rx.tcontroller,
+                    from: Duration(minutes: rx.t),
+                    to: Duration(minutes: 0),
+                    builder: (CustomTimerRemainingTime remaining) {
+                      return Text(
+                        "${remaining.hours}:${remaining.minutes}:${remaining.seconds}",
+                        style: TextStyle(fontSize: 24,)
+                      );
+                    },
+                    onFinish: () {
+                      rx.pause();
+                      rx.tcontroller.reset();
+                    } //resetBuilder: ,
+                    ),
+              ),
+            ),
             Spacer(),
-            //Obx(() => Text("${rx.emisoras[rx.idEmisoraActual]['nombre']}")),
           ],
         ),
       ),

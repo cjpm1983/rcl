@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 //import "package:flutter/services.dart" show rootBundle;
+import 'package:alaba/src/controllers/radio_player_controller.dart';
 import 'package:get_storage/get_storage.dart';
 
 import 'dart:async';
@@ -14,18 +15,22 @@ class _SongsProvider{
 
   List<dynamic> _emisoras = [];
   bool _modoOscuro = true;
-  bool _modoAhorro = true;
+  //bool _modoAhorro = true;
   int _idEmisoraActual = 1;
+
+  var _ahorro;
 
   _SongsProvider(){
     cargarData();
   }
 
 
+
+
   Future<List<dynamic>> cargarData()async{
 
-      //var response = await http.get("https://raw.githubusercontent.com/cjpm1983/db/main/rcl.json");
-      var response = await http.get("http://192.168.43.73/emisoras/urls.json");
+      var response = await http.get("https://raw.githubusercontent.com/cjpm1983/db/main/rcl.json");
+      //var response = await http.get("http://192.168.43.73/emisoras/urls.json");
 
       if (response.statusCode == 200){
 
@@ -62,18 +67,65 @@ class _SongsProvider{
     songstorage.write('modoOscuro',_modoOscuro);
   }
 
-  get modoAhorro {
-     if (songstorage.read('modoAhorro') == null){
-       songstorage.write('modoAhorro',true);
+  // get modoAhorro {
+  //    if (songstorage.read('modoAhorro') == null){
+  //      songstorage.write('modoAhorro',true);
+  //    }
+  //    _modoAhorro =  songstorage.read('modoAhorro');
+  //   return _modoAhorro;
+  // }
+
+  // set modoAhorro(bool modo){
+  //   _modoAhorro = modo;
+  //   songstorage.write('modoAhorro',_modoAhorro);
+  // }
+
+
+  get ahorro{
+    if (songstorage.read('ahorro') == null){
+       songstorage.write('ahorro','e');
      }
-     _modoAhorro =  songstorage.read('modoAhorro');
-    return _modoAhorro;
+     var valor =  songstorage.read('ahorro');
+     switch (valor) {
+       case 'd':
+         _ahorro = Ahorros.desactivado;
+         break;
+       
+       case 'm':
+         _ahorro = Ahorros.moderado;
+         break;
+       
+       case 'e':
+         _ahorro = Ahorros.extremo;
+         break;
+       default:
+       _ahorro = Ahorros.extremo;
+     }
+     
+     return _ahorro;
+
   }
 
-  set modoAhorro(bool modo){
-    _modoAhorro = modo;
-    songstorage.write('modoAhorro',_modoAhorro);
+  set ahorro(Ahorros modo) {
+//Lo llevamos a string porque enum no se puede almacenar en la base de datos
+String valor = "";
+    switch (modo) {
+      case Ahorros.desactivado:
+        valor = "d";
+        break;
+      case Ahorros.moderado:
+        valor = "m";
+        break;
+      case Ahorros.extremo:
+        valor = "e";
+        break;
+      default:
+        valor = "e";
+    }    
+    _ahorro = valor;
+    songstorage.write('ahorro',valor);
   }
+
 
   get idEmisoraActual{
      if (songstorage.read('idEmisoraActual') == null){
