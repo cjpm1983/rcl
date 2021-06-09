@@ -15,6 +15,8 @@ class _SongsProvider{
 
   List<dynamic> _emisoras = [];
   bool _modoOscuro = true;
+  bool _background = false;
+  
   //bool _modoAhorro = true;
   int _idEmisoraActual = 1;
 
@@ -65,6 +67,19 @@ class _SongsProvider{
   set modoOscuro(bool modo){
     _modoOscuro = modo;
     songstorage.write('modoOscuro',_modoOscuro);
+  }
+
+  get background {
+     if (songstorage.read('background') == null){
+       songstorage.write('background',false);
+     }
+     _background =  songstorage.read('background');
+    return _background;
+  }
+
+  set background(bool modo){
+    _background = modo;
+    songstorage.write('background',_background);
   }
 
   // get modoAhorro {

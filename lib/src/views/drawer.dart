@@ -34,13 +34,13 @@ class DrawerWidget extends GetView<DrawerX> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 ListTile(
-                  title: Text("Radio Cristiana Lite")
+                  title: Text("Radio Cristiana Lite",style:TextStyle(color:Colors.white, fontSize: 24, shadows: [Shadow(offset: Offset(-2,2))]))
                 ),
               ],
             ),
             decoration: BoxDecoration(
-              image: DecorationImage(
-                  fit: BoxFit.fill, image: AssetImage('assets/icon.png')),
+               image: DecorationImage(
+                   fit: BoxFit.fill, image: AssetImage('assets/trigo.jpg')),
               color: Colors.blue,
             ),
           ),
@@ -67,11 +67,11 @@ class DrawerWidget extends GetView<DrawerX> {
             subtitle: Obx(() => rx.actual['nombre']!=null
                                           ?
                                             Text(" ${rx.actual['nombre']} ", 
-                                               style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold,decoration: TextDecoration.underline, color:Colors.blueAccent
+                                               style: TextStyle( fontWeight: FontWeight.bold,color:Colors.blueAccent[400]
                                             ),
                                             )
                                           :
-                                           Text(" Cargando ... ", 
+                                           Text("", 
                                                style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold, 
                                             ),
                                             )
@@ -176,6 +176,25 @@ class DrawerWidget extends GetView<DrawerX> {
                   });
             },
           ),
+
+          Obx(() => ListTile(
+            title: Text("Reproducción de Fondo", style: _textoItemDrawer()),
+                subtitle: rx.background
+                    ? Text(
+                        'Activado',
+                        style: TextStyle(color: Colors.greenAccent[400]),
+                      )
+                    : Text(
+                        'Desactivado',
+                        style: TextStyle(color: Colors.blueGrey[400]),
+                      ),
+                leading: Icon(Icons.screen_lock_portrait_outlined),
+                onTap: () {
+                  rx.background = !rx.background;
+                  
+                },
+              )),
+
 
           ListTile(
             title: Text("Acerca de", style: _textoItemDrawer()),
@@ -401,4 +420,6 @@ class DrawerWidget extends GetView<DrawerX> {
                 }
               return t;
               }
+
+              
 }

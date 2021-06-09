@@ -25,7 +25,7 @@ class RadioPlayer extends StatelessWidget {
                                            // ),
                                             )
                                           :
-                                           Text(" Cargando ... ", 
+                                           Text("Radio Cristiana Lite", 
                                                //style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold, 
                                            // ),
                                             )
@@ -43,18 +43,21 @@ class RadioPlayer extends StatelessWidget {
               () => rx.buttonState == "playing"
                   ? Image(
                       image: AssetImage('assets/music.gif'),
-                      width: 150.0,
-                      height: 150.0,
+                      width: 200.0,
+                      height: 200.0,
                     )
                   : rx.buttonState == "loading"
-                      ? Text(
-                          "Cargando...",
-                          textScaleFactor: 2.0,
-                        )
-                      : Text(
-                          "Pausado",
-                          textScaleFactor: 2.0,
-                        ),
+                      ?
+                      Image(
+                      image: AssetImage('assets/musicstop.png'),
+                      width: 200.0,
+                      height: 200.0,
+                    )
+                      : Image(
+                      image: AssetImage('assets/musicstop.png'),
+                      width: 200.0,
+                      height: 200.0,
+                    ),
             ),
 
             
@@ -111,7 +114,7 @@ class RadioPlayer extends StatelessWidget {
         );
       case "paused":
         return IconButton(
-          icon: Icon(Icons.play_circle_outline, color: Colors.lightGreen),
+          icon: Icon(Icons.play_circle_outline, color: Colors.lightGreen[400]),
           iconSize: 120.0,
           onPressed: () {
             rx.play();
@@ -122,7 +125,7 @@ class RadioPlayer extends StatelessWidget {
         );
       case "playing":
         return IconButton(
-          icon: Icon(Icons.stop_circle_outlined, color: Colors.red[400]),
+          icon: Icon(Icons.stop_circle_outlined, color: Colors.redAccent[400]),
           iconSize: 120.0,
           onPressed: () {
             rx.pause();

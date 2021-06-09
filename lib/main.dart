@@ -7,6 +7,8 @@ import 'src/controllers/drawer_controller.dart';
 import 'src/controllers/radio_player_controller.dart';
 import 'src/views/radioPlayer.dart';
 
+import 'package:flutter/services.dart';
+
 // void main() {
 //   runApp(MyApp());
 // }
@@ -17,10 +19,20 @@ main() async {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatelessWidget{
   // This widget is the root of your application.
+
+
   @override
   Widget build(BuildContext context) {
+    
+    
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.portraitUp,
+    ]);
+
+
     DrawerX dd = Get.put(DrawerX());
     //RadioCX rx = Get.put(RadioCX());
 
