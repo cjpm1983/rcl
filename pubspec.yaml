@@ -1,5 +1,5 @@
 name: alaba
-description: Radio Transmundial - consumo de datos mínimo.
+description: Radio Cristiana Lite - consumo de datos mínimo.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
@@ -38,6 +38,8 @@ dependencies:
   custom_timer: ^0.0.2
   http: ^0.12.0
   flutter_background: ^1.0.0
+  volume_control: ^0.1.5
+  #marquee: ^2.1.0
 
 dev_dependencies:
   flutter_test:

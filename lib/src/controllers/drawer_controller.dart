@@ -7,8 +7,9 @@ class DrawerX extends GetxController {
   
   var _modoOscuro = true.obs;
  
-  DrawerX(){
-  }
+  // DrawerX(){
+  //   ;
+  // }
 
   set modoOscuro(bool modo){
     _modoOscuro.value = modo;

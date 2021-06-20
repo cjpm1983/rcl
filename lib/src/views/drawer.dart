@@ -6,13 +6,12 @@ import 'package:alaba/src/controllers/radio_player_controller.dart';
 // import 'package:alaba/src/controllers/listado_page_controler.dart';
 // import 'package:alaba/src/controllers/radio_player_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_switch/flutter_switch.dart';
 
 import 'package:get/get.dart';
-import 'dart:async';
-import 'package:url_launcher/url_launcher.dart';
+// import 'dart:async';
+// import 'package:url_launcher/url_launcher.dart';
 
-import 'package:flutter_linkify/flutter_linkify.dart';
+// import 'package:flutter_linkify/flutter_linkify.dart';
 
 class DrawerWidget extends GetView<DrawerX> {
   @override
@@ -128,11 +127,27 @@ class DrawerWidget extends GetView<DrawerX> {
                         horizontal: 10.0, vertical: 10.0),
                     child: Column(children: [
                       Text(
-                          "Para evitar el drenado de datos la emisora se apagará en el tiempo seleccionado aquí"),
+                          "Para evitar el fuga de datos puede configurar un temporizador de autoapagado"),
                       Divider(color: Colors.yellow),
                       Obx(
                         () => Column(
                           children: [
+                            RadioListTile<Tempos>(
+                              title: const Text('Deshabilitado.', style: TextStyle(color:Colors.red)),
+                              value: Tempos.d,
+                              groupValue: rx.tempo,
+                              onChanged: (Tempos value) {
+                                rx.tempo = value;
+                              },
+                            ),
+                            RadioListTile<Tempos>(
+                              title: const Text('2 horas.'),
+                              value: Tempos.h2,
+                              groupValue: rx.tempo,
+                              onChanged: (Tempos value) {
+                                rx.tempo = value;
+                              },
+                            ),
                             RadioListTile<Tempos>(
                               title: const Text('1 hora.'),
                               value: Tempos.h1,
@@ -149,14 +164,14 @@ class DrawerWidget extends GetView<DrawerX> {
                                 rx.tempo = value;
                               },
                             ),
-                            RadioListTile<Tempos>(
-                              title: const Text('15 minutos.'),
-                              value: Tempos.m15,
-                              groupValue: rx.tempo,
-                              onChanged: (Tempos value) {
-                                rx.tempo = value;
-                              },
-                            ),
+                            // RadioListTile<Tempos>(
+                            //   title: const Text('15 minutos.'),
+                            //   value: Tempos.m15,
+                            //   groupValue: rx.tempo,
+                            //   onChanged: (Tempos value) {
+                            //     rx.tempo = value;
+                            //   },
+                            // ),
                             RadioListTile<Tempos>(
                               title: const Text('5 minutos.'),
                               value: Tempos.m5,
@@ -217,6 +232,10 @@ class DrawerWidget extends GetView<DrawerX> {
                                     Text("   Adrian Yanes"),
                                     Text("   Carlos J. Palacios"),
                                     Text("   Kyle Pitre"),
+                                    Divider(),
+                                    Text("Arte: "),
+                                    Text("   Noriel S. Morales"),
+                                    
                                     // SelectableLinkify(
                                     //       onOpen: _onOpen,
                                     //       text: "Contacto: cjpm1983@gmail.com",
@@ -330,8 +349,18 @@ class DrawerWidget extends GetView<DrawerX> {
                                           },
                                         ),
                                         RadioListTile<Ahorros>(
-                                          title: const Text('Moderado'),
-                                          subtitle: const Text('20Mb/h'),
+                                          title: const Text('Normal (Estéreo)'),
+                                          subtitle: const Text('16Mb/h'),
+                                          value: Ahorros.normal,
+                                          groupValue: rx.ahorro,
+                                          onChanged: (Ahorros value) {
+                                            rx.ahorro = value;
+                                            rx.pause();
+                                          },
+                                        ),
+                                        RadioListTile<Ahorros>(
+                                          title: const Text('Moderado (Mono)'),
+                                          subtitle: const Text('10Mb/h'),
                                           value: Ahorros.moderado,
                                           groupValue: rx.ahorro,
                                           onChanged: (Ahorros value) {
@@ -340,8 +369,8 @@ class DrawerWidget extends GetView<DrawerX> {
                                           },
                                         ),
                                         RadioListTile<Ahorros>(
-                                          title: const Text('Extremo'),
-                                          subtitle: const Text('8Mb/h'),
+                                          title: const Text('Extremo (Mono)'),
+                                          subtitle: const Text('6Mb/h'),
                                           value: Ahorros.extremo,
                                           groupValue: rx.ahorro,
                                           onChanged: (Ahorros value) {
@@ -373,13 +402,13 @@ class DrawerWidget extends GetView<DrawerX> {
                 );
               }
             
-              Future<void> _onOpen(LinkableElement link) async {
-                if (await canLaunch(link.url)) {
-                  await launch(link.url);
-                } else {
-                  throw 'No se pudo abrir el enlace $link, compruebe su conexión';
-                }
-              }
+              // Future<void> _onOpen(LinkableElement link) async {
+              //   if (await canLaunch(link.url)) {
+              //     await launch(link.url);
+              //   } else {
+              //     throw 'No se pudo abrir el enlace $link, compruebe su conexión';
+              //   }
+              // }
             
               _generaListado(RadioCX rx) {
                 // return DropdownButton(items: rx.emisoras.map((e) {
@@ -395,6 +424,9 @@ class DrawerWidget extends GetView<DrawerX> {
                           onTap: (){
                             rx.idEmisoraActual = e["id"];
                             rx.pause();
+                            if (rx.buttonState=="playing"){
+                              rx.play();
+                            }
                             Get.back();
             
                           },
@@ -411,11 +443,14 @@ class DrawerWidget extends GetView<DrawerX> {
                   case Ahorros.desactivado:
                     t = Text("Desactivado, Alto Consumo", style: TextStyle(color: Colors.red[400] ));
                     break;
+                  case Ahorros.normal:
+                    t = Text("Normal 16Mb/h", style: TextStyle(color: Colors.blueAccent[400] ));
+                    break;
                   case Ahorros.moderado:
-                    t = Text("Moderado 20Mb/h", style: TextStyle(color: Colors.orangeAccent[400] ));
+                    t = Text("Moderado 10Mb/h", style: TextStyle(color: Colors.orangeAccent[400] ));
                     break;
                   case Ahorros.extremo:
-                    t = Text("Extremo 8Mb/h", style: TextStyle(color: Colors.green[400] ));
+                    t = Text("Extremo 6Mb/h", style: TextStyle(color: Colors.green[400] ));
                     break;
                 }
               return t;

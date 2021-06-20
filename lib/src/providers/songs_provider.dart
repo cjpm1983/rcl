@@ -19,6 +19,7 @@ class _SongsProvider{
   
   //bool _modoAhorro = true;
   int _idEmisoraActual = 1;
+  var _aviso;
 
   var _ahorro;
 
@@ -45,6 +46,9 @@ class _SongsProvider{
         List<dynamic> emisorasT = dataMap['emisoras'];
 
         _emisoras = emisorasT.map((c)=>c).toList();
+
+        _aviso = dataMap['aviso'];
+        //print("En el provider aviso es $_aviso");
 
       }
        
@@ -106,6 +110,10 @@ class _SongsProvider{
          _ahorro = Ahorros.desactivado;
          break;
        
+       case 'n':
+         _ahorro = Ahorros.normal;
+         break;
+
        case 'm':
          _ahorro = Ahorros.moderado;
          break;
@@ -128,6 +136,9 @@ String valor = "";
       case Ahorros.desactivado:
         valor = "d";
         break;
+      case Ahorros.normal:
+        valor = "n";
+        break;
       case Ahorros.moderado:
         valor = "m";
         break;
@@ -138,6 +149,7 @@ String valor = "";
         valor = "e";
     }    
     _ahorro = valor;
+    print("Modo ahorro guardado $valor");
     songstorage.write('ahorro',valor);
   }
 
@@ -153,6 +165,10 @@ String valor = "";
   set idEmisoraActual(int emisora){
     _idEmisoraActual = emisora;
     songstorage.write('idEmisoraActual',_idEmisoraActual);
+  }
+
+  get aviso {
+    return _aviso;
   }
 
 }

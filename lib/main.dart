@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 import 'src/controllers/drawer_controller.dart';
-import 'src/controllers/radio_player_controller.dart';
+//import 'src/controllers/radio_player_controller.dart';
 import 'src/views/radioPlayer.dart';
 
 import 'package:flutter/services.dart';
@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget{
       title: 'RadioTM',
       theme: ThemeData(
         brightness: dd.modoOscuro ? Brightness.light : Brightness.dark,
-        primarySwatch: Colors.purple,
+        //primarySwatch: Colors.,
       ),
       home: RadioPlayer(),
     );
