@@ -2,8 +2,6 @@
 
 import 'package:alaba/src/controllers/drawer_controller.dart';
 import 'package:alaba/src/controllers/radio_player_controller.dart';
-import 'package:alaba/src/reproductor/views/podcast.dart';
-import 'package:alaba/src/reproductor/views/podcasts.dart';
 //import 'package:custom_timer/custom_timer.dart';
 // import 'package:alaba/src/controllers/listado_page_controler.dart';
 // import 'package:alaba/src/controllers/radio_player_controller.dart';
@@ -90,13 +88,6 @@ class DrawerWidget extends GetView<DrawerX> {
                 ),
               );
             },
-          ),
-          ListTile(
-            title: Text("Podcast", style: _textoItemDrawer()),
-            leading: Icon(Icons.mic_none_rounded),
-            onTap: () {
-              Get.to(Podcasts());
-            }
           ),
           Obx(() => ListTile(
                 title: dd.modoOscuro

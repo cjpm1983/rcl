@@ -6,6 +6,8 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
    <application
         android:label="Radio Cristiana Lite"
@@ -45,5 +47,33 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+
+        <!--PARA LAS DESCARGAS CON FLUTTER_DOWNLOADER-->
+        <provider
+              android:name="vn.hunghd.flutterdownloader.DownloadedFileProvider"
+              android:authorities="${applicationId}.flutter_downloader.provider"
+              android:exported="false"
+              android:grantUriPermissions="true">
+              <meta-data
+                  android:name="android.support.FILE_PROVIDER_PATHS"
+                  android:resource="@xml/provider_paths"/>
+        </provider>
     </application>
+
+
+<!--   
+   <provider
+     android:name="androidx.work.impl.WorkManagerInitializer"
+     android:authorities="${applicationId}.workmanager-init"
+     tools:node="remove" />
+
+ <provider
+     android:name="vn.hunghd.flutterdownloader.FlutterDownloaderInitializer"
+     android:authorities="${applicationId}.flutter-downloader-init"
+     android:exported="false">
+
+     <meta-data
+         android:name="vn.hunghd.flutterdownloader.MAX_CONCURRENT_TASKS"
+         android:value="3" />
+ </provider> -->
 </manifest>

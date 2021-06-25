@@ -1,0 +1,8 @@
+<resource>    
+    <string name="flutter_downloader_notification_started">Descarga Iniciada</string>
+    <string name="flutter_downloader_notification_in_progress">Descarga en proceso</string>
+    <string name="flutter_downloader_notification_canceled">Descarga cancelada</string>
+    <string name="flutter_downloader_notification_failed">Descarga fallida</string>
+    <string name="flutter_downloader_notification_complete">Descarga completa</string>
+    <string name="flutter_downloader_notification_paused">Descarga pausada</string>
+</resource>
