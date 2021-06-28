@@ -2,14 +2,15 @@
 
 import 'package:alaba/src/controllers/drawer_controller.dart';
 import 'package:alaba/src/controllers/radio_player_controller.dart';
-import 'package:alaba/src/reproductor/views/podcast.dart';
 import 'package:alaba/src/reproductor/views/podcasts.dart';
 //import 'package:custom_timer/custom_timer.dart';
 // import 'package:alaba/src/controllers/listado_page_controler.dart';
 // import 'package:alaba/src/controllers/radio_player_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
 
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 // import 'dart:async';
 // import 'package:url_launcher/url_launcher.dart';
 
@@ -72,8 +73,8 @@ class DrawerWidget extends GetView<DrawerX> {
                                             ),
                                             )
                                           :
-                                           Text("", 
-                                               style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold, 
+                                           Text("Seleccione una emisora", 
+                                               style: TextStyle( fontWeight: FontWeight.bold, 
                                             ),
                                             )
                                           ),
@@ -93,10 +94,15 @@ class DrawerWidget extends GetView<DrawerX> {
           ),
           ListTile(
             title: Text("Podcast", style: _textoItemDrawer()),
-            leading: Icon(Icons.mic_none_rounded),
+            subtitle: Text("Predicaciones, reflexiones, series y más.",
+            style: TextStyle( fontWeight: FontWeight.bold,color:Colors.blueAccent[400]),
+            ),
+            leading: Icon(Icons.mic_outlined),
             onTap: () {
-              Get.to(Podcasts());
-            }
+              Get.to(()=>Podcasts());
+            },
+            //tileColor: Colors.lightBlue[400],
+
           ),
           Obx(() => ListTile(
                 title: dd.modoOscuro
@@ -124,6 +130,7 @@ class DrawerWidget extends GetView<DrawerX> {
 
           ListTile(
             title: Text("Autoapagado", style: _textoItemDrawer()),
+            subtitle: Text("Temporizador de apagado"), 
             leading: Icon(Icons.av_timer_rounded),
             onTap: () {
               Navigator.pop(context);
@@ -227,7 +234,7 @@ class DrawerWidget extends GetView<DrawerX> {
               Navigator.pop(context);
 
               Get.defaultDialog(
-              title: '\nAcerca de',
+              title: 'Acerca de',
               //middleText: 'para poner contador a 0',
               content: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10.0,vertical: 10.0),
@@ -244,11 +251,13 @@ class DrawerWidget extends GetView<DrawerX> {
                                     Divider(),
                                     Text("Arte: "),
                                     Text("   Noriel S. Morales"),
+                                    Divider(),
+
                                     
-                                    // SelectableLinkify(
-                                    //       onOpen: _onOpen,
-                                    //       text: "Contacto: cjpm1983@gmail.com",
-                                    //     ),
+                                    SelectableLinkify(
+                                          onOpen: _onOpen,
+                                          text: "Actualizaciones en: https://play.google.com/store/apps/details?id=com.cjpm1983.rcl",
+                                        ),
 
                                     Divider(color: Colors.yellow),
                                     Text(
@@ -465,5 +474,16 @@ class DrawerWidget extends GetView<DrawerX> {
               return t;
               }
 
+
+
+  Future<void>_onOpen(LinkableElement link) async {
+    if(await canLaunch(link.url)){
+        await launch(link.url);
+    }
+    else{
+      throw 'No se pudo abrir el enlace $link, compruebe su conexión';
+    }
+
+  }
               
 }

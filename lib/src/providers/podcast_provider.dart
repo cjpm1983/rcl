@@ -39,7 +39,7 @@ class _PodcastsProvider{
         //print("En el provider aviso es $_aviso");
 
       }
-      // print(_podcasts);
+      //print("*********Fijate aqui los podcast que tipo de objeto $_podcasts");
       return _podcasts;
 
   }

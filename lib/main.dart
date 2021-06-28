@@ -1,3 +1,4 @@
+import 'package:alaba/src/reproductor/controllers/download_controler.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -34,6 +35,8 @@ class MyApp extends StatelessWidget{
 
 
     DrawerX dd = Get.put(DrawerX());
+    
+    DownloadX dw = Get.put(DownloadX());
     //RadioCX rx = Get.put(RadioCX());
 
     return GetMaterialApp(

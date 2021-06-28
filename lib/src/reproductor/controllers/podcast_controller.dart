@@ -1,21 +1,25 @@
 import 'dart:async';
+import 'dart:io';
+import 'package:alaba/src/reproductor/controllers/download_controler.dart';
 import 'package:alaba/src/reproductor/views/common.dart';
 import 'package:audio_session/audio_session.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart' as Rxd;
-import 'package:flutter_background/flutter_background.dart';
+//import 'package:flutter_background/flutter_background.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:custom_timer/custom_timer.dart';
+//import 'package:custom_timer/custom_timer.dart';
 
 
 import 'package:alaba/src/providers/podcast_provider.dart';
-import 'package:volume_control/volume_control.dart';
+//import 'package:volume_control/volume_control.dart';
 
 
 
 class PodcastCX extends GetxController {
 
+  
+  DownloadX dw = Get.find<DownloadX>();
   
   AudioPlayer _player;  
   var _playlist = ConcatenatingAudioSource(
@@ -30,7 +34,7 @@ class PodcastCX extends GetxController {
                 ),
       ]
     ).obs;
-  RxList<dynamic> _podcasts =  [].obs;
+  RxList _podcasts =  [].obs;
   RxMap _aviso = {}.obs;// tiene tipo y mensaje
   RxBool _showAviso = true.obs;
   //Del Podcast
@@ -58,6 +62,7 @@ class PodcastCX extends GetxController {
   get showAviso{
     if (aviso['mensaje']=="")
       _showAviso.value=false;
+
 
     return _showAviso.value;
   }
@@ -150,7 +155,7 @@ class PodcastCX extends GetxController {
     return _actual.value;
   }
 
-  set actual(RxMap act){
+  set actual(Map act){
     _actual.value = act;
   }
 
@@ -158,7 +163,7 @@ class PodcastCX extends GetxController {
     return _podcasts.value;
   }
 
-  set podcasts(RxList act){
+  set podcasts(List act){
     _podcasts.value = act;
   }
   
@@ -175,6 +180,7 @@ class PodcastCX extends GetxController {
       PodcastCX(){  
     
         _player = AudioPlayer();
+        print("Inicializado AudioPlayer en Podcast Controller");
         
         _init();
         
@@ -182,20 +188,46 @@ class PodcastCX extends GetxController {
     
         Future<void> _init() async {
     
-          _podcasts.value = await PodcastsProvider.cargarData();
-          //print(podcasts);
-          _actual.value = _podcasts.value[0];//.firstWhere((p) => true);//p["id"] = idactual);
-          print("Aqui----${_actual.value["arte"]}");
+          podcasts = await PodcastsProvider.cargarData();
+          //print("*********Fijate aqui los podcast que tipo de objeto $podcasts");
+          //Da error aqui con los dynamics que no son un tipo de no se que
+
+          //Al inicio no hace falta actual
+          //actual = podcasts.firstWhere((p) => p["id"] == idactual);
+// print("******El podcast 1 ${podcasts[1]["id"]}");
+// print("idActual $idactual");
+          //print("Aqui----${actual["arte"]}");
 
           //La lista de capitulos a mostrar dentro del podcast _actual
           
           //*****Descomenta esto
-          _recargarPlayList();
+          //_recargarPlayList();
           //print(PodcastsProvider.aviso["tipo"]);
           _aviso.value = PodcastsProvider.aviso;
     
     
     
+        // session = await AudioSession.instance;
+        // await session.configure(AudioSessionConfiguration.speech());
+        // // Listen to errors during playback.
+        // _player.playbackEventStream.listen((event) {},
+        //     onError: (Object e, StackTrace stackTrace) {
+        //   print('A stream error occurred: $e');
+        // });
+        // try {
+        //   await _player.setAudioSource(playlist);
+        //   print("playlist aniadida");
+        // } catch (e) {
+        //   // Catch load errors: 404, invalid url...
+        //   print("Error loading audio source: $e");
+        // }
+      }
+
+      //este metodo meloinvente para llamarlo alseleccionar desde podcats list porque no se cambia al entrar alseleccionado
+      Future<void> agregarPlaylistAlPlayer() async{
+
+        recargarPlayList();
+              
         session = await AudioSession.instance;
         await session.configure(AudioSessionConfiguration.speech());
         // Listen to errors during playback.
@@ -211,7 +243,6 @@ class PodcastCX extends GetxController {
           print("Error loading audio source: $e");
         }
       }
-    
       @override
       void dispose() {
         _player.stop();
@@ -234,68 +265,59 @@ class PodcastCX extends GetxController {
                   tag: AudioMetadata(
                     album: actual["podcast"],
                     title: p["titulo"],
-                    artwork: "https://raw.githubusercontent.com/cjpm1983/db/60bd886c40ebea465510fd7653138fab18d4e652/podcasts/images/logo.jpg",
+                    artwork: p["arte"]//"https://raw.githubusercontent.com/cjpm1983/db/60bd886c40ebea465510fd7653138fab18d4e652/podcasts/images/logo.jpg",
                   ),
                 ),
             ).toList();
   
   }
-          
-      void _recargarPlayList() {
+      void recargarPlayList(){
+        _recargarPlayList();
+      }    
+      void _recargarPlayList(){
+
+            // //Agregar campo descargado
+            // List capitulos = await actual["capitulos"].map(
+            //   (c)async{
+            //     c["descargado"]=await dw.yaDescargado("${actual["id"]}_${actual["capitulos"][index]["id"]}.mp3");
+            //     if (c["descargado"]){
+            //       c["url"]=dw.localPath + Platform.pathSeparator + 'PodcastsRCL' + Platform.pathSeparator + actual["id"] +"_" + c["id"] + ".mp3";
+            //       print("url nueva ${c["url"]}");
+            //     }
+            //     return c;
+            //     }
+            // ).toList();
+
               _playlist.value = ConcatenatingAudioSource(
-            children: //_listadoDePodcasts()
-            List.generate(actual["capitulos"].length, (index) => 
-            
-                AudioSource.uri(  
-                  Uri.parse(actual["capitulos"][index]["url"]),
+            children: 
+
+
+               // bool descargado =  dw.yaDescargado("${actual["id"]}_${actual["capitulos"][index]["id"]}.mp3");
+          
+            List.generate(actual["capitulos"].length, (index) { 
+                
+              return AudioSource.uri(  
+                  
+                  Uri.parse(actual["capitulos"][index]["url"],)
+                  
+                  ,
+
                   tag: AudioMetadata(
                     album: actual["podcast"],
                     title: actual["capitulos"][index]["titulo"],
                     subtitle: actual["capitulos"][index]["por"],
                     size: actual["capitulos"][index]["size"],
                     artwork: actual["capitulos"][index]["arte"],
+                    info: actual["capitulos"][index]["informacion"],
                   ),
-                ),
+                );
+            }
             )
 
 
             );
 
 
-
-// [
-
-// actual["capitulos"].map((p) => AudioSource.uri(  
-//                   Uri.parse(p["url"]),
-//                   tag: AudioMetadata(
-//                     album: actual["podcast"],
-//                     title: p["titulo"],
-//                     artwork: "https://raw.githubusercontent.com/cjpm1983/db/60bd886c40ebea465510fd7653138fab18d4e652/podcasts/images/logo.jpg",
-//                   ),
-//                 ),
-//             ).toList()
-//             ]
-
-
-
-            // [
-            //   AudioSource.uri(  
-            //       Uri.parse("https://raw.githubusercontent.com/cjpm1983/db/60bd886c40ebea465510fd7653138fab18d4e652/podcasts/los_obstaculos_de_la_vida_cristiana.mp3"),
-            //       tag: AudioMetadata(
-            //         album: "De prueba Inicial1",
-            //         title: "Datos Iniciales1",
-            //         artwork: "https://raw.githubusercontent.com/cjpm1983/db/60bd886c40ebea465510fd7653138fab18d4e652/podcasts/images/logo.jpg",
-            //       ),
-            //     ),
-            //     AudioSource.uri(  
-            //       Uri.parse("https://raw.githubusercontent.com/cjpm1983/db/60bd886c40ebea465510fd7653138fab18d4e652/podcasts/los_obstaculos_de_la_vida_cristiana.mp3"),
-            //       tag: AudioMetadata(
-            //         album: "De prueba Inicial2",
-            //         title: "Datos Iniciales2",
-            //         artwork: "https://raw.githubusercontent.com/cjpm1983/db/60bd886c40ebea465510fd7653138fab18d4e652/podcasts/images/logo.jpg",
-            //       ),
-            //     ),
-            // ]
             }
 
   Future<bool> cerrar() async{
@@ -414,6 +436,7 @@ class AudioMetadata {
   final String artwork;
   final String subtitle;
   final double size;
+  final String info;
 
   AudioMetadata({
      this.album,
@@ -421,5 +444,6 @@ class AudioMetadata {
      this.artwork, 
      this.subtitle, 
      this.size, 
+     this.info,
   });
 }

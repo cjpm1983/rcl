@@ -24,105 +24,77 @@ class DownloadX extends GetxController {
   Directory savedDir;
   Directory directory;
   bool hasGranted;
-  PermissionStatus status;
+  //PermissionStatus status;
   PermissionStatus result;
 
+  bool _download_iniciado=false;
+
+  //SendPort send;
+
+  var _download;
+
+  RxInt _capitulos_descargados = 0.obs;
+
+  set capitulos_descargados(int c){
+    _capitulos_descargados.value = c;
+  }
+  get capitulos_descargados{
+    return _capitulos_descargados.value;
+  }
+  
+  set localPath(String l){
+    _localPath = l;
+  }
+  get localPath{
+    return _localPath;
+  }
 
 
-
-
-
-
+  
 
   DownloadX(){
     _init();
-
   }
 
   Future<void> _init() async {
+      await _initializeFlutterDownloader();
+      downloadListener();
 
-    
-    //tempDir = await getExternalStorageDirectory();
+      String _localPath =
+        (await findLocalPath()) + Platform.pathSeparator + 'PodcastsRCL';
 
 
-
-    // String _localPath =
-    //     (await findLocalPath()) + Platform.pathSeparator + 'Example_Downloads';
-
-    // final savedDir = Directory(_localPath);
-    // bool hasExisted = await savedDir.exists();
-    // if (!hasExisted) {
-    //   savedDir.create();
-    // }
-
-    WidgetsFlutterBinding.ensureInitialized();
-    await FlutterDownloader.initialize(
-        debug: true // optional: set false to disable printing logs to console
-      );
-    
-    //mio
-    // IsolateNameServer.registerPortWithName(_port.sendPort, 'downloader_send_port');
-    _bindBackgroundIsolate();
-    // _port.listen((dynamic data) {
-    //   String id = data[0];
-    //   DownloadTaskStatus  statusl = data[1];
-    //   int progressl = data[2];
-    //   print("la descarga $id - status $statusl - progreso $progressl");
-    //   //setState((){ });
-      
-    //   update();
-    // });
-
-    FlutterDownloader.registerCallback(downloadCallback);
 
   }
 
-  Future<String> newTask(String url, String nombre) async {
-    
-
-    var taskId = await FlutterDownloader.enqueue(
-                                          url: url,
-                                          savedDir: savedDir.path,
-                                          fileName: nombre,//seria dinamico
-                                          showNotification: true, // show download progress in status bar (for Android)
-                                          openFileFromNotification: true, // click on notification to open downloaded file (for Android)
-                                        );
-
-  return taskId;
-
+  void verTareas() async{
+              String query = "SELECT * FROM task";
+          var tasks = await FlutterDownloader.loadTasksWithRawQuery(query: query);
+          //if the task exists, open it
+          if (tasks.length > 0){
+            tasks.map((t)=> print(t) );
+            //Pero en task tenemos todo lo necesario
+            print("Tareas => ${tasks}");
+            } 
   }
-
 
 
   @override
   void dispose() {
     //IsolateNameServer.removePortNameMapping('downloader_send_port');
-    _unbindBackgroundIsolate();
+    IsolateNameServer.removePortNameMapping('downloader_send_port');
+    //_unbindBackgroundIsolate();
     super.dispose();
   }
 
-  // static void downloadCallback(String id, DownloadTaskStatus status, int progress) {
-  //   SendPort send = IsolateNameServer.lookupPortByName('downloader_send_port');
-  //   send.send([id, status, progress]);
-  // }
 
-  //al cerrar
-  @override
-  void close() {
-    _unbindBackgroundIsolate();
-    super.dispose();
-  }
 
   //Modificar este ejemplo,esta por lazona
-  void compartir(String id, Directory tempDir){
-    Share.shareFiles(['${tempDir.path}/abejita.jpg']);
+  void compartir(String nombre)async{
+    String path = (await findLocalPath()) + Platform.pathSeparator + 'PodcastsRCL'+ Platform.pathSeparator + nombre;
+    Share.shareFiles([path]);
   }
 
-  Future<List<DownloadTask>> CargarTodasLasDescargas() async{
-
-    _tasks = await FlutterDownloader.loadTasks();
-    return _tasks;
-  }
 
   set permissionReady(bool p){
     _permissionReady.value=p;
@@ -135,48 +107,26 @@ class DownloadX extends GetxController {
     hasGranted = await _checkPermission();
 
     if (hasGranted) {
-      await _prepareSaveDir();
+      //TODO  Importante
+      await crearDirectorio();
     }
 
       _permissionReady.value = hasGranted;
   }
-
-  Future<void> _prepareSaveDir() async {
-    _localPath =
-        (await _findLocalPath()) + Platform.pathSeparator + 'PodcastsRCL';
-
-        print("LocalPath es **** $_localPath");
-
-    savedDir = Directory(_localPath);
-          print("saveDir es **** ${savedDir.toString()}");
-    bool hasExisted = await savedDir.exists();
-    if (!hasExisted) {
-      savedDir.create();
-    }
-  }
-
-   Future<String> _findLocalPath() async {
-    directory =  await getExternalStorageDirectory();
-    return directory.path;
-  }
-  
+ 
   Future<bool> _checkPermission() async {
     //if (widget.platform == TargetPlatform.android) {
-      status = await Permission.storage.status;
+      PermissionStatus status = await Permission.storage.status;
       if (status != PermissionStatus.granted) {
-        retryRequestPermission();
+        //retryRequestPermission();
         result = await Permission.storage.request();
         if (result == PermissionStatus.granted) {
           return true;
         }
-        update();
-      // } else {
-      //   return true;
-      // }
-    
-    return false;
+        update();    
   
   }
+    return false;
   }
 
 
@@ -185,49 +135,156 @@ class DownloadX extends GetxController {
       IsolateNameServer.removePortNameMapping('downloader_send_port');
     }
 
-  void _bindBackgroundIsolate() {
 
-    bool isSuccess = IsolateNameServer.registerPortWithName(
-         _port.sendPort, 'downloader_send_port');
-    
 
   
-    if (!isSuccess) {
-      _unbindBackgroundIsolate();
-      _bindBackgroundIsolate();
-      return;
-    }
+
+//Delnuevo ejemplo
+_initializeFlutterDownloader() async{
+    WidgetsFlutterBinding.ensureInitialized();
+await FlutterDownloader.initialize();
+print("****Seinicializo el flutterDownloader*******");
+    _download_iniciado=true;
+}
+
+
+  _downloadListener() {
+    IsolateNameServer.registerPortWithName(_port.sendPort, 'downloader_send_port');
     _port.listen((dynamic data) {
-      // if (debug) {
-      //   print('UI Isolate Callback: $data');
-      // }
       String id = data[0];
       DownloadTaskStatus status = data[1];
       int progress = data[2];
 
-      if (_tasks != null && _tasks.isNotEmpty) {
-        task = _tasks.firstWhere((task) => task.taskId == id);
-        print("***********reporte de descarga $id $status $progress");
-          // task.status = status;
-          // task.progress = progress;
+      //Aqui se hace una verificacion a ver si esta completada
+
+      // if (progress == -1 ) {
+      //   print("Ya se descargo********************************************");
+      //     abrirArchivoTarea(id);
+      // }       
+      if (progress == 100 && id != null) {
+          capitulos_descargados++;
+      }      
+      if (status.toString() == "DownloadTaskStatus(3)" && progress == 100 && id != null) {
+          abrirArchivoTarea(id);
+          capitulos_descargados++;
       }
+
     });
+    FlutterDownloader.registerCallback(downloadCallback);
   }
 
 
-  void downloadCallback(String id, DownloadTaskStatus status, int progress) {
+//   void downloadCallback( String id, DownloadTaskStatus status, int progress) {
+//     send = IsolateNameServer.lookupPortByName('downloader_send_port');
+//     send.send([id, status, progress]);
+//   }
+
+//   FlutterDownloader.registerCallback(downloadCallback); 
+
+static void downloadCallback(String id, DownloadTaskStatus status, int progress) {
     
-      print( 'Background Isolate Callback: task ($id) is in status ($status) and process ($progress)');
+      //print('Reporte **** Background Isolate Callback: task ($id) is in status ($status) and process ($progress)');
     
-    final SendPort send =
-        IsolateNameServer.lookupPortByName('downloader_send_port');
+    //final SendPort send = IsolateNameServer.lookupPortByName('downloader_send_port')!;
+    final SendPort send = IsolateNameServer.lookupPortByName('downloader_send_port');
     send.send([id, status, progress]);
+
+
   }
 
 
-  
+  void download(String url,String nombre) async {
+   print("*************COMENZAR DESCARGA****************");
+    //Primero verificamos si el archivo existe ya en el directorio
+    bool descargado = await yaDescargado(nombre);
+    print("descargado $descargado");
+    
+    if (descargado){
+      
+          capitulos_descargados++;
+    }
+    else{
+
+    String _localPath =
+        (await findLocalPath()) + Platform.pathSeparator + 'PodcastsRCL';
 
 
+    savedDir = Directory(_localPath);
 
+    if (!permissionReady){
+        await retryRequestPermission();
+    }
+    else{
+      bool hasExisted = await savedDir.exists();
+      if (!hasExisted) {
+        savedDir.create();
+        print("Directorio de descargas creado");
+      }
+    }
+
+    String _url = url;
+    _download = await FlutterDownloader.enqueue(
+      url: _url,
+      savedDir: _localPath,
+      fileName: nombre,
+      showNotification: true,
+      openFileFromNotification: true,
+    );
+    
+    }
+  }
+
+  Future<bool> yaDescargado(String nombre) async{
+    String path = (await findLocalPath()) + Platform.pathSeparator + 'PodcastsRCL'+ Platform.pathSeparator + nombre;
+    print("Comprobando $path");
+    bool existe = await File(path).exists();
+
+    bool descargadoCompleto=false;
+    String query = 'SELECT * FROM task WHERE file_name = "'+nombre+'" AND progress=100';
+    var tasks = await FlutterDownloader.loadTasksWithRawQuery(query: query);
+    //print(" que bola ${tasks[0]}");
+    if (tasks.length>0){
+    //if (true){
+        descargadoCompleto=true;
+    }
+    return (existe && descargadoCompleto);
+  }
+
+  void crearDirectorio() async{
+      bool hasExisted = await savedDir.exists();
+      if (!hasExisted) {
+        savedDir.create();
+        print("Directorio de descargas creado");
+      }
+  }
+
+  Future<String> findLocalPath() async {
+    final directory =
+        // (MyGlobals.platform == "android")
+        // ?
+        await getExternalStorageDirectory();
+    // : await getApplicationDocumentsDirectory();
+    return directory.path;
+  }
+
+  void downloadListener() {
+    _downloadListener();
+  }
+
+  void abrirArchivoTarea(String id) async{
+    String query = "SELECT * FROM task WHERE task_id='" + id + "'";
+    var tasks = await FlutterDownloader.loadTasksWithRawQuery(query: query);
+    //if the task exists, open it
+    if (tasks != null){
+      //Esto permite abrir elarchivo si hay con que
+      //FlutterDownloader.open(taskId: id);
+      //Pero en task tenemos todo lo necesario
+      print("Tarea completada => ${tasks}");
+      //tasks.map((t)=>print("a ver si se desgloza ${tasks[0].progress}"));
+      
+      capitulos_descargados++;
+      } 
+
+  }
 
 }
