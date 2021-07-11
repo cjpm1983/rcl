@@ -274,31 +274,89 @@ class PodcastCX extends GetxController {
       void recargarPlayList(){
         _recargarPlayList();
       }    
-      void _recargarPlayList(){
+      void _recargarPlayList()async{
 
-            // //Agregar campo descargado
-            // List capitulos = await actual["capitulos"].map(
+
+        
+
+
+            //   Future<List> _descargados = await actual["capitulos"].map(
             //   (c)async{
-            //     c["descargado"]=await dw.yaDescargado("${actual["id"]}_${actual["capitulos"][index]["id"]}.mp3");
+            //     String _nombre = "${actual["id"]}_${actual["capitulos"][index]["id"]}.mp3";
+                
+            //     dw.yaDescargado(_nombre).then((value) => c["descargado"]=value );
+            //     print("mambo${c["descargado"]}");
             //     if (c["descargado"]){
-            //       c["url"]=dw.localPath + Platform.pathSeparator + 'PodcastsRCL' + Platform.pathSeparator + actual["id"] +"_" + c["id"] + ".mp3";
+            //       c["url"]=dw.localPath + Platform.pathSeparator + _nombre;
             //       print("url nueva ${c["url"]}");
+                  
             //     }
             //     return c;
             //     }
             // ).toList();
 
-              _playlist.value = ConcatenatingAudioSource(
+            // List _ldescargados = [];
+
+            // void reconstruir(Map c)async{
+            //         print("mambo");
+            //            String _nombre = "${actual["id"]}_${actual["capitulos"][index]["id"]}.mp3";
+                      
+            //           c["descargado"] = await dw.yaDescargado(_nombre);
+            //          // c["descargado"].then((value)=>print("mambo${c["descargado"]}");)
+                     
+            //           print("mambo-${c["descargado"]}");
+            //           if (c["descargado"]){
+            //              c["url"]=dw.localPath + Platform.pathSeparator + _nombre;
+            //            print("url - nueva ${c["url"]}");
+                        
+            //            }
+            //           _ldescargados.add(c);
+                      
+            //       }
+            
+            // Iterable<Future> mappedList = actual["capitulos"].map((c)async => await reconstruir(c));
+
+            // Future<List> futureList = Future.wait(mappedList);
+
+            // List result = await futureList;
+
+            // print("Resultado *** $result");
+
+
+
+
+
+            
+            // actual["capitulos"].map((c)=>reconstruir(c));
+            // var mapped;
+
+            // mapped = actual["capitulos"].map((c)=>reconstruir(c));
+
+            // for (Future f in mapped){
+            //   f.then((v)=>print("Valores*** $v"));
+            //   //Map t = await f;
+            //   //_ldescargados.add(t);
+            // }
+                  
+
+               
+
+          _playlist.value = ConcatenatingAudioSource(
             children: 
 
 
                // bool descargado =  dw.yaDescargado("${actual["id"]}_${actual["capitulos"][index]["id"]}.mp3");
           
             List.generate(actual["capitulos"].length, (index) { 
+              // print("Kaboom");
+              //  print("ldescargados vale---- ${_ldescargados}");
                 
               return AudioSource.uri(  
-                  
-                  Uri.parse(actual["capitulos"][index]["url"],)
+
+                  Uri.parse(
+                    actual["capitulos"][index]["url"],
+                    //_ldescargados[index]["url"],
+                  )
                   
                   ,
 
@@ -377,6 +435,13 @@ class ControlButtons extends StatelessWidget {
                 width: 64.0,
                 height: 64.0,
                 child: CircularProgressIndicator(),
+
+              //   IconButton(
+              //   icon: Icon(Icons.play_arrow),
+              //   iconSize: 64.0,
+              //   onPressed: player.play,
+              // ),
+
               );
             } else if (playing != true) {
               return IconButton(

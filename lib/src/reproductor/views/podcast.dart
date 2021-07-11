@@ -33,7 +33,7 @@ class Podcast extends StatelessWidget {
               Expanded(
                 child: 
                 Obx(()=>
-                px.podcasts.length==0 || px.state==null
+                px.podcasts.length==0 //|| px.state==null
                   ?
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -211,11 +211,11 @@ class Podcast extends StatelessWidget {
 
                     return Obx(()=>ReorderableListView(
                       onReorder: (int oldIndex, int newIndex) {
-                        if (oldIndex > newIndex) newIndex--;
+                        if (oldIndex < newIndex) newIndex--;
                         px.playlist.move(oldIndex, newIndex);
                       },
                       children: [
-                        for (var i = px.sequence.length-1; i >= 0; i--)
+                        for (var i = 0; i < px.sequence.length; i++)
                           Dismissible(
                             key: ValueKey(px.sequence[i]),
                             background: Container(

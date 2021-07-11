@@ -19,7 +19,7 @@ class DownloadX extends GetxController {
   ReceivePort _port = ReceivePort();
   List<DownloadTask> _tasks ;
   DownloadTask task;
-  String _localPath;
+  String _localPath ;
   RxBool _permissionReady = false.obs;
   Directory savedDir;
   Directory directory;
@@ -60,7 +60,7 @@ class DownloadX extends GetxController {
       await _initializeFlutterDownloader();
       downloadListener();
 
-      String _localPath =
+      _localPath =
         (await findLocalPath()) + Platform.pathSeparator + 'PodcastsRCL';
 
 
@@ -205,8 +205,8 @@ static void downloadCallback(String id, DownloadTaskStatus status, int progress)
     }
     else{
 
-    String _localPath =
-        (await findLocalPath()) + Platform.pathSeparator + 'PodcastsRCL';
+    // String _localPath =
+    //     (await findLocalPath()) + Platform.pathSeparator + 'PodcastsRCL';
 
 
     savedDir = Directory(_localPath);
