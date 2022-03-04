@@ -42,7 +42,7 @@ dependencies:
   flutter_downloader: ^1.6.1
   share_plus: ^2.1.4
   permission_handler: ^8.1.1
-  flutter_screen_recording: ^1.1.1
+  #flutter_screen_recording: ^1.1.1
   #marquee: ^2.1.0
 
 dev_dependencies:
