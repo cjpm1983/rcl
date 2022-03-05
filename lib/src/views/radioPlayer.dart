@@ -92,11 +92,13 @@ class RadioPlayer extends StatelessWidget {
                           //Navigator.pop(context);
 
                           Get.defaultDialog(
-                            title: '\nEmisoras',
-                            content: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 10.0, vertical: 10.0),
-                              child: _generaListado(rx),
+                            title: '\nEmisoras1',
+                            content: SingleChildScrollView(
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 0.0, vertical: 10.0),
+                                child: _generaListado(rx),
+                              ),
                             ),
                           );
                         },
@@ -292,6 +294,40 @@ class RadioPlayer extends StatelessWidget {
     //   );
     // }).toList(),
     // );
+    return 
+        SizedBox(
+          
+            height: 350.0,
+          child: ListView.builder(
+            itemCount: rx.emisoras.length,
+            itemBuilder: (context, index) => Card(
+              elevation: 6,
+              margin: EdgeInsets.all(10),
+              child: ListTile(
+                
+                leading: 
+                // CircleAvatar(
+                //   child: 
+                  rx.emisoras[index]["thumbnail"]==""
+                  ? Image.asset('assets/trigo.jpg')
+                  :Image.network(rx.emisoras[index]["thumbnail"]),
+                title: Text(rx.emisoras[index]["nombre"]),
+                subtitle: Text(rx.emisoras[index]["descripcion"]),
+                onTap: () {
+                  rx.idEmisoraActual = rx.emisoras[index]["id"];
+                  rx.pause();
+                  if (rx.buttonState == "playing") {
+                    rx.play();
+                  }
+                  Get.back();
+                },
+                /*trailing: Icon(Icons.add_a_photo),*/
+              ),
+            ),
+          ),
+        )
+      ;
+    /*
     return Column(
       children: rx.emisoras.map((e) {
         return ListTile(
@@ -307,6 +343,7 @@ class RadioPlayer extends StatelessWidget {
         );
       }).toList(),
     );
+    */
   }
 
 

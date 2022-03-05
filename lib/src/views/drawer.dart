@@ -241,7 +241,7 @@ class DrawerWidget extends GetView<DrawerX> {
                 child: Column(
                                   children: [
 
-                                    Text("Radio Cristiana Lite version 1.0"),
+                                    Text("Radio Cristiana Lite version 2.0"),
                                     Divider(),
                                     Divider(),
                                     Text("Desarrollo: "),
@@ -318,7 +318,7 @@ class DrawerWidget extends GetView<DrawerX> {
           //   ),
           // ),
           Divider(),
-
+/*
           ListTile(
             title: Text("Ahorro", style: _textoItemDrawer()),
             subtitle: Obx(() => _getSubTextAhorro(rx)),
@@ -407,7 +407,7 @@ class DrawerWidget extends GetView<DrawerX> {
                               });
                         },
                       ),
-            
+         */   
             
                     ],
                   ),
