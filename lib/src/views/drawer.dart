@@ -83,13 +83,15 @@ class DrawerWidget extends GetView<DrawerX> {
               Navigator.pop(context);
 
               Get.defaultDialog(
-                title: '\nEmisoras',
-                content: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 10.0, vertical: 10.0),
-                  child: _generaListado(rx),
-                ),
-              );
+                            title: '\nEmisoras',
+                            content: SingleChildScrollView(
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 0.0, vertical: 10.0),
+                                child: _generaListado(rx),
+                              ),
+                            ),
+                          );;
             },
           ),
           ListTile(
@@ -428,33 +430,49 @@ class DrawerWidget extends GetView<DrawerX> {
               //   }
               // }
             
-              _generaListado(RadioCX rx) {
-                // return DropdownButton(items: rx.emisoras.map((e) {
-                //   return DropdownMenuItem(
-                //     child: Text(e['nombre'])
-                //   );
-                // }).toList(),
-                // );
-                return  Column(
-                      children: rx.emisoras.map((e) {
-                        return ListTile(
-                          title: Text(e["nombre"]),
-                          onTap: (){
-                            rx.idEmisoraActual = e["id"];
-                            rx.pause();
-                            if (rx.buttonState=="playing"){
-                              rx.play();
-                            }
-                            Get.back();
-            
-                          },
-                          
-                        );
-                      }).toList(),
-                    );
-            
-              }
-            
+  _generaListado(RadioCX rx) {
+    // return DropdownButton(items: rx.emisoras.map((e) {
+    //   return DropdownMenuItem(
+    //     child: Text(e['nombre'])
+    //   );
+    // }).toList(),
+    // );
+    return 
+        SizedBox(
+          
+            height: 350.0,
+          child: ListView.builder(
+            itemCount: rx.emisoras.length,
+            itemBuilder: (context, index) => Card(
+              elevation: 6,
+              margin: EdgeInsets.all(10),
+              child: ListTile(
+                
+                leading: 
+                // CircleAvatar(
+                //   child: 
+                  rx.emisoras[index]["thumbnail"]==""
+                  ? Image.asset('assets/trigo.jpg')
+                  :Image.network(rx.emisoras[index]["thumbnail"]),
+                title: Text(rx.emisoras[index]["nombre"]),
+                subtitle: Text(rx.emisoras[index]["descripcion"]),
+                onTap: () {
+                  rx.idEmisoraActual = rx.emisoras[index]["id"];
+                  rx.pause();
+                  if (rx.buttonState == "playing") {
+                    rx.play();
+                  }
+                  Get.back();
+                },
+                /*trailing: Icon(Icons.add_a_photo),*/
+              ),
+            ),
+          ),
+        )
+      ;
+    
+  }
+  
               Text _getSubTextAhorro(RadioCX rx) {
                 Text t;
                 switch (rx.ahorro) {

@@ -92,7 +92,7 @@ class RadioPlayer extends StatelessWidget {
                           //Navigator.pop(context);
 
                           Get.defaultDialog(
-                            title: '\nEmisoras1',
+                            title: '\nEmisoras',
                             content: SingleChildScrollView(
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
